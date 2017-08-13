@@ -10,6 +10,7 @@ using Unbroken.LaunchBox.Plugins.Data;
 
 namespace PCSX2_Configurator
 {
+
     public class Class1 : IGameMenuItemPlugin
     {
         public string Caption
@@ -54,10 +55,12 @@ namespace PCSX2_Configurator
 
         public bool GetIsValidForGame(IGame selectedGame)
         {
-            if (PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId).Title == "PCSX2")
+            var emulator = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId);
+            if (emulator != null && emulator.Title == "PCSX2")
                 return true;
-
+           
             return false;
+            
         }
 
         public bool GetIsValidForGames(IGame[] selectedGames)
