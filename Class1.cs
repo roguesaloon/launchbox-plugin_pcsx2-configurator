@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
+﻿using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
@@ -16,20 +10,33 @@ namespace PCSX2_Configurator
 
     public class Class1 : IGameMenuItemPlugin, ISystemMenuItemPlugin, ISystemEventsPlugin
     {
-        private bool independantMemCards = true;
-        private bool useCurrentLogs = true;
-        private bool useCurrentFolders = true;
-        private bool useCurrentFiles = true;
-        private bool useCurrentWindow = true;
-        private bool useCurrentGSdx = true;
-        private bool useCurrentLilyPad = true;
-        private string configsDir = "default";
+        private static string pluginDir =
+            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public static string settingsFile = pluginDir + "\\Settings.ini";
+        private static string configsDir = 
+            IniFileHelper.ReadValue("PCSX2_Configurator", "ConfigsDirectoryPath", settingsFile, "default");
 
         public void OnEventRaised(string eventType)
         {
             if (eventType == "LaunchBoxStartupCompleted")
             {
                 HideContextMenuItem(true);
+
+                if(!File.Exists(settingsFile))
+                {
+                    File.Create(settingsFile).Dispose();
+
+                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseIndependantMemoryCards", "true", settingsFile).ToString();
+                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseIndependantMemoryCards", "true", settingsFile);
+                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFileSettings", "true", settingsFile);
+                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentWindowSettings", "true", settingsFile);
+                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLogSettings", "true", settingsFile);
+                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFolderSettings", "false", settingsFile);
+                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentVMSettings", "false", settingsFile);
+                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentGSdxPluginSettings", "false", settingsFile);
+                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLilyPadPluginSettings", "false", settingsFile);
+                    IniFileHelper.WriteValue("PCSX2_Configurator", "ConfigsDirectoryPath", configsDir, settingsFile);
+                }
             }
         }
 
@@ -71,7 +78,7 @@ namespace PCSX2_Configurator
         {
             get
             {
-                return "PCSX2 Configuration Settings";
+                return "PCSX2 Configurator Settings";
             }
         }
 
@@ -157,99 +164,24 @@ namespace PCSX2_Configurator
                 safeTitle = safeTitle.Replace(c.ToString(), "");
 
             // Gets the given and absolute path of the PCSX2 emulator
-            var path = Path.GetDirectoryName(pcsx2.ApplicationPath);
-            var pathAbs = (!Path.IsPathRooted(path)) ? Directory.GetCurrentDirectory() + "\\" + path : path;
+            var appPath = pcsx2.ApplicationPath;
+            var appPathAbs = (!Path.IsPathRooted(appPath)) ? Directory.GetCurrentDirectory() + "\\" + appPath : appPath;
 
             // Sets the config path from user settings
             var configPath = (configsDir == "default") ? "inis" : configsDir;
             configPath += "\\" + safeTitle;
 
             // Gets the absolute path of the Game Config Directory
-            var configPathAbs = (!Path.IsPathRooted(configPath)) ? pathAbs + "\\" + configPath : configPath;
-
-            // Gets default config file Path (If Exists)
-            var defaultConfigPath = (File.Exists(pathAbs + "\\inis\\PCSX2_ui.ini")) ? pathAbs + "\\inis" : (File.Exists(pathAbs + "\\inis_1.4.0\\PCSX2_ui.ini")) ? pathAbs + "\\inis_1.4.0" : "none";
+            var configPathAbs = (!Path.IsPathRooted(configPath)) ? Path.GetDirectoryName(appPathAbs) + "\\" + configPath : configPath;
 
             // If PCSX2 is not already set up in this folder
             if (!File.Exists(configPathAbs + "\\PCSX2_ui.ini"))
             {
-                // Create this folder
-                Directory.CreateDirectory(configPathAbs);
-                var uiConfig = "";
-
-                // If There is a default config path
-                if (defaultConfigPath != "none")
+                return new string[2]
                 {
-                    // Store contents of UI Config File
-                    var defaultUiConfig = File.ReadAllText(defaultConfigPath + "\\PCSX2_ui.ini");
-
-
-                    // If Using Current Log Settings
-                    if (useCurrentLogs)
-                    {
-                        // Get The ProgramLog Section from the default UI config file
-                        var section = defaultUiConfig.Substring(defaultUiConfig.IndexOf("[ProgramLog]"));
-                        section = section.Substring(0, section.IndexOf('[', 1) - 1);
-
-                        // And add it to the per-game config
-                        uiConfig += section;
-                    }
-
-                    // If Using Current (Custom) Folders
-                    if (useCurrentFolders)
-                    {
-                        // Get The Folders Section from the default UI config file
-                        var section = defaultUiConfig.Substring(defaultUiConfig.IndexOf("[Folders]"));
-                        section = section.Substring(0, section.IndexOf('[', 1) - 1);
-
-                        // And add it to the per-game config
-                        uiConfig += section;
-                    }
-
-                    // If Using Current Files (Bios and Plugins)
-                    if (useCurrentFiles)
-                    {
-                        // Get The Filenames Section from the default UI config file
-                        var section = defaultUiConfig.Substring(defaultUiConfig.IndexOf("[Filenames]"));
-                        section = section.Substring(0, section.IndexOf('[', 1) - 1);
-
-                        // And add it to the per-game config
-                        uiConfig += section;
-                    }
-
-                    // If Using Current GS Window Settins
-                    if (useCurrentWindow)
-                    {
-                        // Get The GSWindow Section from the default UI config file
-                        var section = defaultUiConfig.Substring(defaultUiConfig.IndexOf("[GSWindow]"));
-                        section = section.Substring(0, section.IndexOf('[', 1) - 1);
-
-                        // And add it to the per-game config
-                        uiConfig += section;
-                    }
-
-                    // If Using Current GSdx (Graphics) Config (and exists)
-                    if (useCurrentGSdx && File.Exists(defaultConfigPath + "\\GSdx.ini"))
-                    {
-                        // Copy the default config to the per-game config
-                        File.Copy(defaultConfigPath + "\\GSdx.ini", configPathAbs + "\\GSdx.ini");
-                    }
-
-                    // If Using Current LillyPad (Controller) Config (and exists)
-                    if (useCurrentLilyPad && File.Exists(defaultConfigPath + "\\LilyPad.ini"))
-                    {
-                        // Copy the default config to the per-game config
-                        File.Copy(defaultConfigPath + "\\LilyPad.ini", configPathAbs + "\\LilyPad.ini");
-                    }
-                }
-
-                // Add a new Memory Card for this game, if Independant Memory Cards is enabled
-                if (independantMemCards) uiConfig += ("[MemoryCards]\r\nSlot1_Enable=enabled\r\nSlot1_Filename=" + safeTitle.Replace(" ", "") + ".ps2");
-
-                // Create and Write UI Config to PCSX2 UI Config File
-                var uiConfigFile = File.CreateText(configPathAbs + "\\PCSX2_ui.ini");
-                uiConfigFile.Write(uiConfig);
-                uiConfigFile.Close();
+                    Directory.GetCurrentDirectory() + "\\AutoHotkey\\AutoHotkey.exe",
+                    "\"" + pluginDir + "\\Config Create.ahk\" \"" + configPathAbs + "\"  \"" + appPathAbs + "\""
+                };
             }
 
             // Return the application path, with the config path as a commandline argument
@@ -258,7 +190,12 @@ namespace PCSX2_Configurator
 
         public void OnSelected()
         {
-            MessageBox.Show("Config Menu");
+            var settingsForm = new Form1();
+            settingsForm.StartPosition = FormStartPosition.Manual;
+            settingsForm.Location = new Point(
+                PluginHelper.LaunchBoxMainForm.Location.X + (int)((PluginHelper.LaunchBoxMainForm.Width - settingsForm.Width) * 0.5f), 
+                PluginHelper.LaunchBoxMainForm.Location.Y + (int)((PluginHelper.LaunchBoxMainForm.Height - settingsForm.Height) * 0.5f));
+            settingsForm.Show();
         }
     }
 }
