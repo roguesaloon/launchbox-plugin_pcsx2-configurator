@@ -23,21 +23,23 @@ namespace PCSX2_Configurator
                 HideContextMenuItem(true);
 
                 if(!File.Exists(settingsFile))
-                {
-                    File.Create(settingsFile).Dispose();
-
-                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseIndependantMemoryCards", "true", settingsFile).ToString();
-                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseIndependantMemoryCards", "true", settingsFile);
-                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFileSettings", "true", settingsFile);
-                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentWindowSettings", "true", settingsFile);
-                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLogSettings", "true", settingsFile);
-                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFolderSettings", "false", settingsFile);
-                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentVMSettings", "false", settingsFile);
-                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentGSdxPluginSettings", "false", settingsFile);
-                    IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLilyPadPluginSettings", "false", settingsFile);
-                    IniFileHelper.WriteValue("PCSX2_Configurator", "ConfigsDirectoryPath", configsDir, settingsFile);
-                }
+                    WriteDefaultIniFile();
             }
+        }
+
+        private void WriteDefaultIniFile()
+        {
+            File.Create(settingsFile).Dispose();
+
+            IniFileHelper.WriteValue("PCSX2_Configurator", "UseIndependantMemoryCards", "true", settingsFile);
+            IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFileSettings", "true", settingsFile);
+            IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentWindowSettings", "true", settingsFile);
+            IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLogSettings", "true", settingsFile);
+            IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFolderSettings", "false", settingsFile);
+            IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentVMSettings", "false", settingsFile);
+            IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentGSdxPluginSettings", "false", settingsFile);
+            IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLilyPadPluginSettings", "false", settingsFile);
+            IniFileHelper.WriteValue("PCSX2_Configurator", "ConfigsDirectoryPath", configsDir, settingsFile);
         }
 
         private void HideContextMenuItem(bool hide)
@@ -131,7 +133,7 @@ namespace PCSX2_Configurator
                 selectedGame.ConfigurationPath = configParams[0];
                 selectedGame.ConfigurationCommandLine = configParams[1];
 
-                selectedGame.CommandLine = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId).CommandLine + " " + configParams[1];
+                selectedGame.CommandLine = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId).CommandLine + " " + configParams[2];
                 return true;
             }
 
@@ -177,15 +179,16 @@ namespace PCSX2_Configurator
             // If PCSX2 is not already set up in this folder
             if (!File.Exists(configPathAbs + "\\PCSX2_ui.ini"))
             {
-                return new string[2]
+                return new string[3]
                 {
                     Directory.GetCurrentDirectory() + "\\AutoHotkey\\AutoHotkey.exe",
-                    "\"" + pluginDir + "\\Config Create.ahk\" \"" + configPathAbs + "\"  \"" + appPathAbs + "\""
+                    "\"" + pluginDir + "\\Config Create.ahk\" \"" + configPathAbs + "\"  \"" + appPathAbs + "\"",
+                    "--cfgpath \"" + configPath + "\""
                 };
             }
 
             // Return the application path, with the config path as a commandline argument
-            return new string[2] { pcsx2.ApplicationPath, "--cfgpath \"" + configPath + "\"" };
+            return new string[3] { pcsx2.ApplicationPath, "--cfgpath \"" + configPath + "\"", "--cfgpath \"" + configPath + "\""};
         }
 
         public void OnSelected()
