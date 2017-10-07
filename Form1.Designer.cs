@@ -30,6 +30,7 @@ namespace PCSX2_Configurator
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.useIndependantMemoryCardsCHK = new System.Windows.Forms.CheckBox();
             this.useCurrentFileSettingsCHK = new System.Windows.Forms.CheckBox();
@@ -53,6 +54,7 @@ namespace PCSX2_Configurator
             this.configDirTXT = new System.Windows.Forms.TextBox();
             this.ApplyBTN = new System.Windows.Forms.Button();
             this.configDirDLG = new System.Windows.Forms.FolderBrowserDialog();
+            this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -148,6 +150,7 @@ namespace PCSX2_Configurator
             this.useIndependantMemoryCardsLBL.TabIndex = 6;
             this.useIndependantMemoryCardsLBL.Text = "Use Indepenant Memory Cards";
             this.useIndependantMemoryCardsLBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTips.SetToolTip(this.useIndependantMemoryCardsLBL, "Creates a Memory Card For Each Games (Uses 8MB per Card)");
             // 
             // useCurrentFileSettingsLBL
             // 
@@ -158,6 +161,7 @@ namespace PCSX2_Configurator
             this.useCurrentFileSettingsLBL.TabIndex = 7;
             this.useCurrentFileSettingsLBL.Text = "Use Current Plugin and Bios Files";
             this.useCurrentFileSettingsLBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTips.SetToolTip(this.useCurrentFileSettingsLBL, "Plugin & Bios Selection (Recommended)");
             // 
             // useCurrentWindowSettingsLBL
             // 
@@ -168,6 +172,7 @@ namespace PCSX2_Configurator
             this.useCurrentWindowSettingsLBL.TabIndex = 8;
             this.useCurrentWindowSettingsLBL.Text = "Use Current GSWindow Settings";
             this.useCurrentWindowSettingsLBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTips.SetToolTip(this.useCurrentWindowSettingsLBL, "Window Size & Aspect Ratio");
             // 
             // useCurrentLogSettingsLBL
             // 
@@ -176,6 +181,7 @@ namespace PCSX2_Configurator
             this.useCurrentLogSettingsLBL.Name = "useCurrentLogSettingsLBL";
             this.useCurrentLogSettingsLBL.Size = new System.Drawing.Size(167, 13);
             this.useCurrentLogSettingsLBL.TabIndex = 9;
+            this.useCurrentLogSettingsLBL.Tag = "Hiding/Showing Console & Debugging";
             this.useCurrentLogSettingsLBL.Text = "Use Current Program Log Settings";
             this.useCurrentLogSettingsLBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -188,6 +194,7 @@ namespace PCSX2_Configurator
             this.useCurrentFolderSettingsLBL.TabIndex = 10;
             this.useCurrentFolderSettingsLBL.Text = "Use Current Folder Settings";
             this.useCurrentFolderSettingsLBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTips.SetToolTip(this.useCurrentFolderSettingsLBL, "For Custom Foler Setup Only (Recommend off)");
             // 
             // useCurrentVMSettingsLBL
             // 
@@ -198,6 +205,7 @@ namespace PCSX2_Configurator
             this.useCurrentVMSettingsLBL.TabIndex = 11;
             this.useCurrentVMSettingsLBL.Text = "Use Current VM Settings";
             this.useCurrentVMSettingsLBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTips.SetToolTip(this.useCurrentVMSettingsLBL, "Hacks & Cheats Settings");
             // 
             // useCurrentVMSettingsCHK
             // 
@@ -217,6 +225,7 @@ namespace PCSX2_Configurator
             this.useCurrentGSdxPluginSettingsLBL.TabIndex = 13;
             this.useCurrentGSdxPluginSettingsLBL.Text = "Use Current GSdx Plugin Settings";
             this.useCurrentGSdxPluginSettingsLBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTips.SetToolTip(this.useCurrentGSdxPluginSettingsLBL, "Graphics Settings");
             // 
             // useCurrentGSdxPluginSettingsCHK
             // 
@@ -236,6 +245,7 @@ namespace PCSX2_Configurator
             this.useCurrentLilyPadPluginSettingsLBL.TabIndex = 15;
             this.useCurrentLilyPadPluginSettingsLBL.Text = "Use Current LilyPad Plugin Settings";
             this.useCurrentLilyPadPluginSettingsLBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTips.SetToolTip(this.useCurrentLilyPadPluginSettingsLBL, "Controller Settings");
             // 
             // useCurrentLilyPadPluginSettingsCHK
             // 
@@ -271,6 +281,7 @@ namespace PCSX2_Configurator
             this.configDirLBL.TabIndex = 0;
             this.configDirLBL.Text = "Configurations Directory";
             this.configDirLBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTips.SetToolTip(this.configDirLBL, "Store per Game Configs Here \\n default Will Use PCSX2 Directory");
             // 
             // configDirBTN
             // 
@@ -344,5 +355,6 @@ namespace PCSX2_Configurator
         private System.Windows.Forms.TextBox configDirTXT;
         private System.Windows.Forms.Button ApplyBTN;
         private System.Windows.Forms.FolderBrowserDialog configDirDLG;
+        private System.Windows.Forms.ToolTip toolTips;
     }
 }

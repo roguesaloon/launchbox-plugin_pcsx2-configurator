@@ -54,6 +54,7 @@ namespace PCSX2_Configurator
                 if (contextMenuStrip.Items[i].Text == Caption)
                 {
                     contextMenuStrip.Items[i].Visible = !hide;
+                    contextMenuStrip.Items[i].Tag = (hide) ? contextMenuStrip.Items[i].Tag + "hidden" : contextMenuStrip.Items[i].Tag.ToString().Replace("hidden", ""); // Must Add Custom User Data for Below Method To Work
                     break;
                 }
             }
@@ -64,16 +65,15 @@ namespace PCSX2_Configurator
             {
                 if (contextMenuStrip.Items[i].GetType() == typeof(ToolStripSeparator))
                 {
-                    contextMenuStrip.Items[i].Visible = (itemsHidden == contextMenuStrip.Items.Count - i - 1) ? false : true;
+                    contextMenuStrip.Items[i].Visible = (itemsHidden == contextMenuStrip.Items.Count-i-1) ? false : true;
                     break;
                 }
 
-                if (!contextMenuStrip.Items[i].Visible)
+                if (contextMenuStrip.Items[i].Tag.ToString().Contains("hidden"))
+                {
                     itemsHidden++;
+                }
             }
-
-            // Write the changes to the context menu back to Launchbox Main Form
-            contextMenuStripField.SetValue(PluginHelper.LaunchBoxMainForm, contextMenuStrip);
         }
 
         public string Caption
