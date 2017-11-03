@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Reflection;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
@@ -24,6 +25,16 @@ namespace PCSX2_Configurator
 
                 if(!File.Exists(settingsFile))
                     WriteDefaultIniFile();
+            }
+
+            if(eventType == "PluginInitialized")
+            {
+                if(!Directory.Exists(Directory.GetCurrentDirectory() + "//SVN"))
+                {
+                    File.WriteAllBytes(Directory.GetCurrentDirectory() + "//SVN.zip", Properties.Resources.SVN);
+                    ZipFile.ExtractToDirectory(Directory.GetCurrentDirectory() + "//SVN.zip", Directory.GetCurrentDirectory() + "//SVN");
+                    File.Delete(Directory.GetCurrentDirectory() + "//SVN.zip");
+                }
             }
         }
 
@@ -56,7 +67,7 @@ namespace PCSX2_Configurator
                 if (contextMenuStrip.Items[i].Text == Caption)
                 {
                     contextMenuStrip.Items[i].Visible = !hide;
-                    hiddenItems[i] = true;
+                    hiddenItems[i] = hide;
                     break;
                 }
             }

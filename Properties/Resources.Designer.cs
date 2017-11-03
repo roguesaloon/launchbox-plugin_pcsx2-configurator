@@ -69,5 +69,15 @@ namespace PCSX2_Configurator.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] SVN {
+            get {
+                object obj = ResourceManager.GetObject("SVN", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
