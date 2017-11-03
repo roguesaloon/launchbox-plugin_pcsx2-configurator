@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.IO;
 using System.IO.Compression;
+using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
@@ -31,7 +32,7 @@ namespace PCSX2_Configurator
             {
                 if(!Directory.Exists(Directory.GetCurrentDirectory() + "//SVN"))
                 {
-                    File.WriteAllBytes(Directory.GetCurrentDirectory() + "//SVN.zip", Properties.Resources.SVN);
+                    new WebClient().DownloadFile("https://www.visualsvn.com/files/Apache-Subversion-1.9.7.zip", Directory.GetCurrentDirectory() + "//SVN.zip");
                     ZipFile.ExtractToDirectory(Directory.GetCurrentDirectory() + "//SVN.zip", Directory.GetCurrentDirectory() + "//SVN");
                     File.Delete(Directory.GetCurrentDirectory() + "//SVN.zip");
                 }
