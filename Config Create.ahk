@@ -90,6 +90,47 @@ if (defaultDir != "none")
 	{
 		FileCopy, %defaultDir%\LilyPad.ini, %configDir%\LilyPad.ini, 1
 	}
+	
+	; Is it a game in the Remote Database of Configs
+	isKnownGame(game, ByRef url)
+	{
+		game := StrReplace(game, " ", "%20")
+		url := "https://github.com/roguesaloon/launchbox-plugin_pcsx2-configurator/tree/master/Game%20Configs/"
+		url = %url%%game%
+		
+		whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
+		whr.Open("GET", url, true)
+		whr.Send()
+		whr.WaitForResponse()
+		response := whr.ResponseText
+		
+		if(response == "Not Found")
+		{
+			return false
+		}
+		else
+		{
+			return true
+		}
+	}
+	
+	useRemoteSettings := false
+	remoteSettingsUrl = null
+	
+	; If Yes Then ask User if they want to use the remote settings
+	if(isKnownGame(gameName, remoteSettingsUrl))
+	{
+		MsgBox, 4, PCSX2 Configurator, You are creating a config for a known game `n would you like to import the optimized settings for this game (can be tweaked later) `n this will override your configurator settings
+		IfMsgBox, Yes
+			useRemoteSettings := true
+	}
+	
+	; Then download them (Using SVN), overwriting what is there
+	if(useRemoteSettings)
+	{
+		remoteSettingsUrl := StrReplace(remoteSettingsUrl, "/tree/master/", "/trunk/")
+		RunWait, %A_ScriptDir%\..\..\SVN\bin\svn.exe export %remoteSettingsUrl% --force, %configDir%\.., HIDE
+	}
 }
 
 ; Ask settings File, If Idependant Memory Cards are Enabled
