@@ -48,13 +48,15 @@ namespace PCSX2_Configurator
             var contextMenuStripField = PluginHelper.LaunchBoxMainForm.GetType().GetField("contextMenuStrip", BindingFlags.NonPublic | BindingFlags.Instance);
             var contextMenuStrip = (ContextMenuStrip)contextMenuStripField.GetValue(PluginHelper.LaunchBoxMainForm);
 
+            var hiddenItems = new bool[contextMenuStrip.Items.Count];
+
             // Hides or shows the menu item with this plugins caption
             for (int i = 0; i < contextMenuStrip.Items.Count; ++i)
             {
                 if (contextMenuStrip.Items[i].Text == Caption)
                 {
                     contextMenuStrip.Items[i].Visible = !hide;
-                    contextMenuStrip.Items[i].Tag = (hide) ? contextMenuStrip.Items[i].Tag + "hidden" : contextMenuStrip.Items[i].Tag.ToString().Replace("hidden", ""); // Must Add Custom User Data for Below Method To Work
+                    hiddenItems[i] = true;
                     break;
                 }
             }
@@ -69,7 +71,7 @@ namespace PCSX2_Configurator
                     break;
                 }
 
-                if (contextMenuStrip.Items[i].Tag.ToString().Contains("hidden"))
+                if (hiddenItems[i] == true)
                 {
                     itemsHidden++;
                 }
