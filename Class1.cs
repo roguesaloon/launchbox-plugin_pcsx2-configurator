@@ -141,7 +141,8 @@ namespace PCSX2_Configurator
         public bool GetIsValidForGame(IGame selectedGame)
         {
             var emulator = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId);
-            if (emulator != null && emulator.Title == "PCSX2")
+
+            if (emulator != null && emulator.Title.Contains("PCSX2"))
             {
                 var configParams = GetConfigParams(selectedGame);
                 selectedGame.ConfigurationPath = configParams[0];
