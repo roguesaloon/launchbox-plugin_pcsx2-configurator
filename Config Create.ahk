@@ -32,6 +32,7 @@ defaultUiFile = %defaultDir%\PCSX2_ui.ini
 FileCreateDir, %configDir%
 FileAppend, ,%configUiFile%
 
+; Add Dummy General Settings Header to The UI File As Ini Read/Write Workaround
 IniWrite, `n , %configUiFile%, GeneralSettings
 
 ; All UI File Settings From Current Config
@@ -172,14 +173,14 @@ if(useRemoteSettings)
 		}
 		
 		FileDelete, %uiTweakFile%
-		
-		FileRead, configUiFileText, %configUiFile%
-		configUiFileText := StrReplace(configUiFileText, "[GeneralSettings]`r`n", "")
-		FileDelete, %configUiFile%
-		FileAppend, %configUiFileText%, %configUiFile%
-		
 	}
 }
+
+; Remove The General Settings Header From UI File
+FileRead, configUiFileText, %configUiFile%
+configUiFileText := StrReplace(configUiFileText, "[GeneralSettings]`r`n", "")
+FileDelete, %configUiFile%
+FileAppend, %configUiFileText%, %configUiFile%
 
 ; After setting everything up, run the emulator with config directory for initial configuration
 Run, %emulatorPath% --cfgpath "%configDir%"
