@@ -116,6 +116,7 @@ if(useCurrentLilyPadPluginSettings == "true")
 isKnownGame(game, ByRef url)
 {
 	game := StrReplace(game, " ", "%20")
+	StringLower, game, game
 	url := "https://github.com/roguesaloon/launchbox-plugin_pcsx2-configurator/tree/master/Game%20Configs/"
 	url = %url%%game%
 	
@@ -152,9 +153,12 @@ if(useRemoteSettings)
 	remoteSettingsUrl := StrReplace(remoteSettingsUrl, "/tree/master/", "/trunk/")
 	RunWait, %A_ScriptDir%\..\..\SVN\bin\svn.exe export %remoteSettingsUrl% --force, %configDir%\.., HIDE
 	
+	; If there is a UI Tweak File
 	uiTweakFile := configDir . "\PCSX2_ui-tweak.ini"
 	if(FileExist(uiTweakFile))
 	{
+	
+		; Parse it and append changes to UI Config File
 		IniRead, tweakSections, %uiTweakFile%
 		
 		Loop, Parse, tweakSections, `n
@@ -175,6 +179,7 @@ if(useRemoteSettings)
 		FileDelete, %uiTweakFile%
 	}
 	
+	; Moves Included Cheats to emulators Cheats folder
 	FileMove, %configDir%\*.pnach, %emulatorDir%\cheats\*.pnach
 }
 
