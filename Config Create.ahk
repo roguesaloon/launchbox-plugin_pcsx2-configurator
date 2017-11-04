@@ -174,6 +174,8 @@ if(useRemoteSettings)
 		
 		FileDelete, %uiTweakFile%
 	}
+	
+	FileMove, %configDir%\*.pnach, %emulatorDir%\cheats\*.pnach
 }
 
 ; Remove The General Settings Header From UI File
