@@ -86,9 +86,9 @@ if(useIndependantMemoryCards == "true")
 ; Ask settings File, If All Settings Should Be Enabled
 IniRead, allowAllSettings, %A_ScriptDir%\Settings.ini, PCSX2_Configurator, AllowAllSettings
 
+; If yes then all the settings (GameFixes, SpeedHacks) and disable prests
 if(allowAllSettings == "true")
 {
-	; Enable Game Fixes and Speed Hacks, With Presets Disabled
 	IniWrite, disabled, %configUiFile%, GeneralSettings, EnablePresets
 	IniWrite, enabled, %configUiFile%, GeneralSettings, EnableGameFixes
 	IniWrite, enabled, %configUiFile%, GeneralSettings, EnableSpeedHacks
@@ -164,7 +164,7 @@ if(useRemoteSettings)
 	remoteSettingsUrl := StrReplace(remoteSettingsUrl, "/tree/master/", "/trunk/")
 	RunWait, %A_ScriptDir%\..\..\SVN\bin\svn.exe export %remoteSettingsUrl% --force, %configDir%\.., HIDE
 	
-	; Always enable Game Fixes and Speed Hacks, With Presets Disabled For Remote Configs
+	; Always allow All Settings For Remote Configs
 	IniWrite, disabled, %configUiFile%, GeneralSettings, EnablePresets
 	IniWrite, enabled, %configUiFile%, GeneralSettings, EnableGameFixes
 	IniWrite, enabled, %configUiFile%, GeneralSettings, EnableSpeedHacks
