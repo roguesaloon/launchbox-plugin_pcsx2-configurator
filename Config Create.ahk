@@ -83,6 +83,17 @@ if(useIndependantMemoryCards == "true")
 	IniWrite,% StrReplace(gameName, " ", "") . ".ps2", %configUiFile%, MemoryCards, Slot1_Filename
 }
 
+; Ask settings File, If All Settings Should Be Enabled
+IniRead, allowAllSettings, %A_ScriptDir%\Settings.ini, PCSX2_Configurator, AllowAllSettings
+
+if(allowAllSettings == "true")
+{
+	; Enable Game Fixes and Speed Hacks, With Presets Disabled
+	IniWrite, disabled, %configUiFile%, GeneralSettings, EnablePresets
+	IniWrite, enabled, %configUiFile%, GeneralSettings, EnableGameFixes
+	IniWrite, enabled, %configUiFile%, GeneralSettings, EnableSpeedHacks
+}
+
 ; VM Settings
 
 ; Ask Settings File, if VM Settings are to be imported
@@ -153,6 +164,11 @@ if(useRemoteSettings)
 	remoteSettingsUrl := StrReplace(remoteSettingsUrl, "/tree/master/", "/trunk/")
 	RunWait, %A_ScriptDir%\..\..\SVN\bin\svn.exe export %remoteSettingsUrl% --force, %configDir%\.., HIDE
 	
+	; Always enable Game Fixes and Speed Hacks, With Presets Disabled For Remote Configs
+	IniWrite, disabled, %configUiFile%, GeneralSettings, EnablePresets
+	IniWrite, enabled, %configUiFile%, GeneralSettings, EnableGameFixes
+	IniWrite, enabled, %configUiFile%, GeneralSettings, EnableSpeedHacks
+
 	; If there is a UI Tweak File
 	uiTweakFile := configDir . "\PCSX2_ui-tweak.ini"
 	if(FileExist(uiTweakFile))
