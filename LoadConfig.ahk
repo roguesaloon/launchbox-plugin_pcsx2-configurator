@@ -122,6 +122,14 @@ if(useCurrentGSdxPluginSettings == "true")
 	FileCopy, %defaultDir%\GSdx.ini, %configDir%\GSdx.ini, 1
 }
 
+;SPU2-X
+IniRead, useCurrentSPU2xPluginSettings, %A_ScriptDir%\Settings.ini, PCSX2_Configurator, UseCurrentSPU2xPluginSettings
+
+if(useCurrentSPU2xPluginSettings == "true")
+{
+	FileCopy, %defaultDir%\SPU2-X.ini, %configDir%\SPU2-X.ini, 1
+}
+
 ; LilyPad
 IniRead, useCurrentLilyPadPluginSettings, %A_ScriptDir%\Settings.ini, PCSX2_Configurator, UseCurrentLilyPadPluginSettings
 

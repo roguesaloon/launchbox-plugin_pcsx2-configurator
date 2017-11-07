@@ -50,7 +50,7 @@ namespace PCSX2_Configurator
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFileSettings", "true", settingsFile);
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentWindowSettings", "true", settingsFile);
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLogSettings", "true", settingsFile);
-            IniFileHelper.WriteValue("PCSX2_Configutator", "AllowAllSettings", "false", settingsFile);
+            IniFileHelper.WriteValue("PCSX2_Configurator", "AllowAllSettings", "false", settingsFile);
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFolderSettings", "false", settingsFile);
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentVMSettings", "false", settingsFile);
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentGSdxPluginSettings", "false", settingsFile);
