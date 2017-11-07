@@ -153,9 +153,43 @@ remoteSettingsUrl = null
 ; If Yes Then ask User if they want to use the remote settings
 if(isKnownGame(gameName, remoteSettingsUrl))
 {
-	MsgBox, 4, PCSX2 Configurator, You are creating a config for a known game`nWould you like to import optimized settings for this game?`nSettings can still be altered later
-	IfMsgBox, Yes
-		useRemoteSettings := true
+	;MsgBox, 4, PCSX2 Configurator, You are creating a config for a known game`nWould you like to import optimized settings for this game?`nSettings can still be altered later
+	;IfMsgBox, Yes
+		;useRemoteSettings := true
+		
+	UseRemoteSettingsPopup()
+	{
+		Gui, New, , PCSX2 Configurator
+		Gui, Add, Picture, , %A_ScriptDir%\Assets\PCSX2Configurator.png
+		Gui -caption +lastfound +alwaysontop
+		Gui, Color, EEAA99
+		WinSet, TransColor, EEAA99
+		Gui, Add, Text, BackgroundTrans x218 y154 w60 h30 gYes
+		Gui, Add, Text, BackgroundTrans x304 y154 w60 h30 gNo
+		Gui, Show, , Pause Script?
+		OnMessage(0x201, "WM_LBUTTONDOWN")
+
+
+		WinWaitClose, Pause Script?
+		Return %flag%
+		
+		Yes:
+			flag := true
+			Gui, Submit
+			return
+
+		No:
+			flag := false
+			Gui, Submit
+			return
+	}
+
+	WM_LBUTTONDOWN()
+	{
+		PostMessage, 0xA1, 2
+	}
+	
+	useRemoteSettings := UseRemoteSettingsPopup()
 }
 
 ; Then download them (Using SVN), overwriting what is there
@@ -207,3 +241,4 @@ FileAppend, %configUiFileText%, %configUiFile%
 
 ; After setting everything up, run the emulator with config directory for initial configuration
 Run, %emulatorPath% --cfgpath "%configDir%"
+ExitApp
