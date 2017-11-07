@@ -1,6 +1,6 @@
 ﻿#NoTrayIcon
 
-; Takes the Config Directory and Path of the Emualtor as Parameters Both are Absolute
+; Takes the Config Directory and Path of the Emulator as Parameters Both are Absolute
 configDir = %1%
 emulatorPath = %2%
 
@@ -27,6 +27,13 @@ if(defaultDir == "none")
 ; Sets the location of the base and new config files
 configUiFile = %configDir%\PCSX2_ui.ini
 defaultUiFile = %defaultDir%\PCSX2_ui.ini
+
+; If Config Has Already Been Created And Left Control Not Pressed
+if(FileExist(configUiFile) && !GetKeyState("LControl"))
+{
+	; Start The Emulator For Configuration
+	GoSub, StartEmulator
+}
 
 ; Creates The Config Directory, and (UI) Config File
 FileCreateDir, %configDir%
@@ -160,15 +167,15 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 	UseRemoteSettingsPopup()
 	{
 		Gui, New, , PCSX2 Configurator
-		Gui, Add, Picture, , %A_ScriptDir%\Assets\PCSX2Configurator.png
+		Gui, Add, Picture, , %A_ScriptDir%\Assets\knowngame.png
 		Gui -caption +lastfound +alwaysontop
 		Gui, Color, EEAA99
 		WinSet, TransColor, EEAA99
 		Gui, Add, Text, BackgroundTrans x218 y154 w60 h30 gYes
 		Gui, Add, Text, BackgroundTrans x304 y154 w60 h30 gNo
+		Gui, Add, Text, BackgroundTrans x374 y16 w16 h16 gGuiClose
 		Gui, Show, , Pause Script?
 		OnMessage(0x201, "WM_LBUTTONDOWN")
-
 
 		WinWaitClose, Pause Script?
 		Return %flag%
@@ -182,6 +189,10 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 			flag := false
 			Gui, Submit
 			return
+		
+		GuiClose:
+			Gui, Cancel
+			ExitApp
 	}
 
 	WM_LBUTTONDOWN()
@@ -207,7 +218,6 @@ if(useRemoteSettings)
 	uiTweakFile := configDir . "\PCSX2_ui-tweak.ini"
 	if(FileExist(uiTweakFile))
 	{
-	
 		; Parse it and append changes to UI Config File
 		IniRead, tweakSections, %uiTweakFile%
 		
@@ -239,6 +249,7 @@ configUiFileText := StrReplace(configUiFileText, "[GeneralSettings]`r`n", "")
 FileDelete, %configUiFile%
 FileAppend, %configUiFileText%, %configUiFile%
 
-; After setting everything up, run the emulator with config directory for initial configuration
-Run, %emulatorPath% --cfgpath "%configDir%"
-ExitApp
+StartEmulator:
+	; After setting everything up, run the emulator with config directory for initial configuration
+	Run, %emulatorPath% --cfgpath "%configDir%"
+	ExitApp

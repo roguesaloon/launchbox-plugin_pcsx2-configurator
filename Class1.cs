@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Windows.Input;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 
@@ -12,7 +13,7 @@ namespace PCSX2_Configurator
 
     public class Class1 : IGameMenuItemPlugin, ISystemMenuItemPlugin, ISystemEventsPlugin
     {
-        private static string pluginDir =
+        public static string pluginDir =
             Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static string settingsFile = pluginDir + "\\Settings.ini";
         private static string configsDir = 
@@ -23,14 +24,16 @@ namespace PCSX2_Configurator
             if (eventType == "LaunchBoxStartupCompleted")
             {
                 HideContextMenuItem(true);
-
-                if(!File.Exists(settingsFile))
-                    WriteDefaultIniFile();
             }
 
             if(eventType == "PluginInitialized")
             {
-                if(!Directory.Exists(Directory.GetCurrentDirectory() + "//SVN"))
+                if (!File.Exists(settingsFile))
+                {
+                    WriteDefaultIniFile();
+                }
+
+                if (!Directory.Exists(Directory.GetCurrentDirectory() + "//SVN"))
                 {
                     new WebClient().DownloadFile("https://www.visualsvn.com/files/Apache-Subversion-1.9.7.zip", Directory.GetCurrentDirectory() + "//SVN.zip");
                     ZipFile.ExtractToDirectory(Directory.GetCurrentDirectory() + "//SVN.zip", Directory.GetCurrentDirectory() + "//SVN");
@@ -47,10 +50,12 @@ namespace PCSX2_Configurator
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFileSettings", "true", settingsFile);
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentWindowSettings", "true", settingsFile);
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLogSettings", "true", settingsFile);
+            IniFileHelper.WriteValue("PCSX2_Configutator", "AllowAllSettings", "false", settingsFile);
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFolderSettings", "false", settingsFile);
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentVMSettings", "false", settingsFile);
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentGSdxPluginSettings", "false", settingsFile);
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLilyPadPluginSettings", "false", settingsFile);
+            IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentSPU2xPluginSettings", "false", settingsFile);
             IniFileHelper.WriteValue("PCSX2_Configurator", "ConfigsDirectoryPath", configsDir, settingsFile);
         }
 
@@ -102,8 +107,24 @@ namespace PCSX2_Configurator
         {
             get
             {
-                return Properties.Resources.pcsx2.ToBitmap();
+                return EmulatorIcon().ToBitmap();
             }
+        }
+
+        public static System.Drawing.Icon EmulatorIcon()
+        {
+            foreach (var emulator in PluginHelper.DataManager.GetAllEmulators())
+            {
+                if (emulator.Title.Contains("PCSX2"))
+                {
+                    var appPath = emulator.ApplicationPath;
+                    appPath = (!Path.IsPathRooted(appPath)) ? Directory.GetCurrentDirectory() + "\\" + appPath : appPath;
+
+                    return Icon.ExtractAssociatedIcon(appPath);
+                }
+            }
+
+            return null;
         }
 
         public bool ShowInBigBox
@@ -182,28 +203,21 @@ namespace PCSX2_Configurator
 
             // Gets the given and absolute path of the PCSX2 emulator
             var appPath = pcsx2.ApplicationPath;
-            var appPathAbs = (!Path.IsPathRooted(appPath)) ? Directory.GetCurrentDirectory() + "\\" + appPath : appPath;
+            appPath = (!Path.IsPathRooted(appPath)) ? Directory.GetCurrentDirectory() + "\\" + appPath : appPath;
 
             // Sets the config path from user settings
             var configPath = (configsDir == "default") ? "inis" : configsDir;
             configPath += "\\" + safeTitle;
 
             // Gets the absolute path of the Game Config Directory
-            var configPathAbs = (!Path.IsPathRooted(configPath)) ? Path.GetDirectoryName(appPathAbs) + "\\" + configPath : configPath;
+            configPath = (!Path.IsPathRooted(configPath)) ? Path.GetDirectoryName(appPath) + "\\" + configPath : configPath;
 
-            // If PCSX2 is not already set up in this folder
-            if (!File.Exists(configPathAbs + "\\PCSX2_ui.ini"))
+            return new string[3]
             {
-                return new string[3]
-                {
-                    Directory.GetCurrentDirectory() + "\\AutoHotkey\\AutoHotkey.exe",
-                    "\"" + pluginDir + "\\Config Create.ahk\" \"" + configPathAbs + "\"  \"" + appPathAbs + "\"",
-                    "--cfgpath \"" + configPath + "\""
-                };
-            }
-
-            // Return the application path, with the config path as a commandline argument
-            return new string[3] { pcsx2.ApplicationPath, "--cfgpath \"" + configPath + "\"", "--cfgpath \"" + configPath + "\""};
+                Directory.GetCurrentDirectory() + "\\AutoHotkey\\AutoHotkey.exe",
+                "\"" + pluginDir + "\\LoadConfig.ahk\" \"" + configPath + "\"  \"" + appPath + "\"",
+                "--cfgpath \"" + configPath + "\""
+            };
         }
 
         public void OnSelected()

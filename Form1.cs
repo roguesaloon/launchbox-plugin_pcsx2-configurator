@@ -1,49 +1,65 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PCSX2_Configurator
 {
     public partial class Form1 : Form
     {
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            if (e.Button == MouseButtons.Left)
+            {
+                this.Capture = false;
+                Message msg = Message.Create(this.Handle, 0XA1, new IntPtr(2), IntPtr.Zero);
+                this.WndProc(ref msg);
+            }
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            e.Graphics.FillRectangle(new SolidBrush(this.BackColor), e.ClipRectangle);
+            e.Graphics.DrawImage(Image.FromFile(Class1.pluginDir + "\\Assets\\background.png"), new Rectangle(0, 0, 400, 400));
+        }
+
         public Form1()
         {
             InitializeComponent();
             LoadFromIniFile();
-
+            this.Icon = Class1.EmulatorIcon();
         }
+
+        private static Image checkmark = Image.FromFile(Class1.pluginDir + "\\Assets\\checkmark.png");
 
         private void LoadFromIniFile()
         {
-            useIndependantMemoryCardsCHK.Checked =
-                IniFileHelper.ReadValue("PCSX2_Configurator", "UseIndependantMemoryCards", Class1.settingsFile) == "true";
+           if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseIndependantMemoryCards", Class1.settingsFile) == "true")
+                useIndependantMemoryCardsCHK.Image = checkmark;
 
-            useCurrentFileSettingsCHK.Checked =
-                IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentFileSettings", Class1.settingsFile) == "true";
+            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentFileSettings", Class1.settingsFile) == "true")
+                useCurrentFileSettingsCHK.Image = checkmark;
 
-            useCurrentWindowSettingsCHK.Checked =
-                IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentWindowSettings", Class1.settingsFile) == "true";
+            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentWindowSettings", Class1.settingsFile) == "true")
+                useCurrentWindowSettingsCHK.Image = checkmark;
 
-            useCurrentLogSettingsCHK.Checked =
-                IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentLogSettings", Class1.settingsFile) == "true";
+            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentLogSettings", Class1.settingsFile) == "true")
+                useCurrentLogSettingsCHK.Image = checkmark;
 
-            useCurrentFolderSettingsCHK.Checked =
-                IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentFolderSettings", Class1.settingsFile) == "true";
+            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentFolderSettings", Class1.settingsFile) == "true")
+                useCurrentFolderSettingsCHK.Image = checkmark;
 
-            useCurrentVMSettingsCHK.Checked =
-                IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentVMSettings", Class1.settingsFile) == "true";
+            if(IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentVMSettings", Class1.settingsFile) == "true")
+                useCurrentVMSettingsCHK.Image = checkmark;
 
-            useCurrentGSdxPluginSettingsCHK.Checked =
-                IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentGSdxPluginSettings", Class1.settingsFile) == "true";
+            if(IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentGSdxPluginSettings", Class1.settingsFile) == "true")
+                useCurrentGSdxPluginSettingsCHK.Image = checkmark;
 
-            useCurrentLilyPadPluginSettingsCHK.Checked =
-                IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentLilyPadPluginSettings", Class1.settingsFile) == "true";
+            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentSPU2xPluginSettings", Class1.settingsFile) == "true")
+                useCurrentSPU2xPluginSettingsCHK.Image = checkmark;
+
+            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentLilyPadPluginSettings", Class1.settingsFile) == "true")
+                useCurrentLilyPadPluginSettingsCHK.Image = checkmark;
 
             configDirTXT.Text =
                 IniFileHelper.ReadValue("PCSX2_Configurator", "ConfigsDirectoryPath", Class1.settingsFile);
@@ -52,44 +68,95 @@ namespace PCSX2_Configurator
         private void WriteToIniFile()
         {
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseIndependantMemoryCards", 
-                useIndependantMemoryCardsCHK.Checked.ToString().ToLower(), Class1.settingsFile);
+                useIndependantMemoryCardsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFileSettings",
-                useCurrentFileSettingsCHK.Checked.ToString().ToLower(), Class1.settingsFile);
+                useCurrentFileSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentWindowSettings",
-                useCurrentWindowSettingsCHK.Checked.ToString().ToLower(), Class1.settingsFile);
+                useCurrentWindowSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLogSettings",
-                useCurrentLogSettingsCHK.Checked.ToString().ToLower(), Class1.settingsFile);
+                useCurrentLogSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFolderSettings",
-                useCurrentFolderSettingsCHK.Checked.ToString().ToLower(), Class1.settingsFile);
+                useCurrentFolderSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentVMSettings",
-               useCurrentVMSettingsCHK.Checked.ToString().ToLower(), Class1.settingsFile);
+               useCurrentVMSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentGSdxPluginSettings",
-                useCurrentGSdxPluginSettingsCHK.Checked.ToString().ToLower(), Class1.settingsFile);
+                useCurrentGSdxPluginSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
+
+            IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentSPU2xPluginSettings",
+                useCurrentSPU2xPluginSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLilyPadPluginSettings",
-                useCurrentLilyPadPluginSettingsCHK.Checked.ToString().ToLower(), Class1.settingsFile);
+                useCurrentLilyPadPluginSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "ConfigsDirectoryPath",
                 configDirTXT.Text, Class1.settingsFile);
         }
 
-        private void ApplyBTN_Click(object sender, EventArgs e)
-        {
-            WriteToIniFile();
-        }
-
         private void configDirBTN_Click(object sender, EventArgs e)
         {
-            if(configDirDLG.ShowDialog() == DialogResult.OK)
+            if (configDirDLG.ShowDialog() == DialogResult.OK)
             {
                 configDirTXT.Text = configDirDLG.SelectedPath;
             }
         }
+
+        private void closeBTN_Click(object sender, EventArgs e)
+        {
+            WriteToIniFile();
+            Close();
+        }
+
+        private void useIndependantMemoryCardsCHK_Click(object sender, EventArgs e)
+        {
+            useIndependantMemoryCardsCHK.Image = (useIndependantMemoryCardsCHK.Image != checkmark) ?  checkmark : null;
+        }
+
+        private void useCurrentFileSettingsCHK_Click(object sender, EventArgs e)
+        {
+            useCurrentFileSettingsCHK.Image = (useCurrentFileSettingsCHK.Image != checkmark) ? checkmark : null;
+        }
+
+        private void useCurrentWindowSettingsCHK_Click(object sender, EventArgs e)
+        {
+            useCurrentWindowSettingsCHK.Image = (useCurrentWindowSettingsCHK.Image != checkmark) ? checkmark : null;
+        }
+
+        private void useCurrentLogSettingsCHK_Click(object sender, EventArgs e)
+        {
+            useCurrentLogSettingsCHK.Image = (useCurrentLogSettingsCHK.Image != checkmark) ? checkmark : null;
+        }
+
+        private void useCurrentFolderSettingsCHK_Click(object sender, EventArgs e)
+        {
+            useCurrentFolderSettingsCHK.Image = (useCurrentFolderSettingsCHK.Image != checkmark) ? checkmark : null;
+        }
+
+        private void useCurrentVMSettingsCHK_Click(object sender, EventArgs e)
+        {
+            useCurrentVMSettingsCHK.Image = (useCurrentVMSettingsCHK.Image != checkmark) ? checkmark : null;
+        }
+
+        private void useCurrentGSdxPluginSettingsCHK_Click(object sender, EventArgs e)
+        {
+            useCurrentGSdxPluginSettingsCHK.Image = (useCurrentGSdxPluginSettingsCHK.Image != checkmark) ? checkmark : null;
+        }
+
+        private void useCurrentSPU2xPluginSettingsCHK_Click(object sender, EventArgs e)
+        {
+            useCurrentSPU2xPluginSettingsCHK.Image = (useCurrentSPU2xPluginSettingsCHK.Image != checkmark) ? checkmark : null;
+        }
+
+        private void useCurrentLilyPadPluginSettingsCHK_Click(object sender, EventArgs e)
+        {
+            useCurrentLilyPadPluginSettingsCHK.Image = (useCurrentLilyPadPluginSettingsCHK.Image != checkmark) ? checkmark : null;
+        }
+
+
     }
 }
