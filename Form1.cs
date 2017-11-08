@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Windows.Forms;
 
 namespace PCSX2_Configurator
@@ -23,14 +24,38 @@ namespace PCSX2_Configurator
             e.Graphics.DrawImage(Image.FromFile(Class1.pluginDir + "\\Assets\\background.png"), new Rectangle(0, 0, 400, 400));
         }
 
+        private static Image checkmark = Image.FromFile(Class1.pluginDir + "\\Assets\\checkmark.png");
+        private static PrivateFontCollection privateFontCollection;
+
         public Form1()
         {
+            
             InitializeComponent();
+            LoadFont();
             LoadFromIniFile();
             this.Icon = Class1.EmulatorIcon();
-        }
+         }
 
-        private static Image checkmark = Image.FromFile(Class1.pluginDir + "\\Assets\\checkmark.png");
+        private void LoadFont()
+        {
+            privateFontCollection = new PrivateFontCollection();
+            privateFontCollection.AddFontFile(Class1.pluginDir + "\\Assets\\FixedsysExcelsiorAscii.ttf");
+
+            var Fixedsys9 = new Font(privateFontCollection.Families[0], 9, FontStyle.Regular);
+            var Fixedsys10 = new Font(privateFontCollection.Families[0], 10, FontStyle.Regular);
+
+            useIndependantMemoryCardsLBL.Font = Fixedsys10;
+            useFileSettingsLBL.Font = Fixedsys10;
+            useWindowSettingsLBL.Font = Fixedsys10;
+            useLogSettingsLBL.Font = Fixedsys10;
+            useFolderSettingsLBL.Font = Fixedsys10;
+            useVMSettingsLBL.Font = Fixedsys10;
+            useGSdxPluginSettingsLBL.Font = Fixedsys10;
+            useSPU2xPluginSettingsLBL.Font = Fixedsys10;
+            useLilyPadPluginSettingsLBL.Font = Fixedsys10;
+            configDirLBL.Font = Fixedsys9;
+            configDirTXT.Font = Fixedsys9;
+        }
 
         private void LoadFromIniFile()
         {

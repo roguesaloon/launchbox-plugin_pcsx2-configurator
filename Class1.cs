@@ -203,19 +203,19 @@ namespace PCSX2_Configurator
 
             // Gets the given and absolute path of the PCSX2 emulator
             var appPath = pcsx2.ApplicationPath;
-            appPath = (!Path.IsPathRooted(appPath)) ? Directory.GetCurrentDirectory() + "\\" + appPath : appPath;
+            var appPathAbs = (!Path.IsPathRooted(appPath)) ? Directory.GetCurrentDirectory() + "\\" + appPath : appPath;
 
             // Sets the config path from user settings
             var configPath = (configsDir == "default") ? "inis" : configsDir;
             configPath += "\\" + safeTitle;
 
             // Gets the absolute path of the Game Config Directory
-            configPath = (!Path.IsPathRooted(configPath)) ? Path.GetDirectoryName(appPath) + "\\" + configPath : configPath;
+            var configPathAbs = (!Path.IsPathRooted(configPath)) ? Path.GetDirectoryName(appPathAbs) + "\\" + configPath : configPath;
 
             return new string[3]
             {
                 Directory.GetCurrentDirectory() + "\\AutoHotkey\\AutoHotkey.exe",
-                "\"" + pluginDir + "\\LoadConfig.ahk\" \"" + configPath + "\"  \"" + appPath + "\"",
+                "\"" + pluginDir + "\\LoadConfig.ahk\" \"" + configPathAbs + "\"  \"" + appPathAbs + "\"",
                 "--cfgpath \"" + configPath + "\""
             };
         }
