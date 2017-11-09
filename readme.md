@@ -7,7 +7,8 @@ Installation
 -------------------------------------------------------------------------------
 Simply Download and extract the zip file, place the "PCSX2 Configurator" folder in your LaunchBox Plugins Directory. Then Start LaunchBox and the plugin will be installed.
 
-2. Settings
+Settings
+-------------------------------------------------------------------------------
 The Plugin Settings Menu is located in LaunchBox's tools Menu. All Current settings are defined how PCSX2 is currently configured.
 Each of the options is explained breifly below:
 
@@ -27,14 +28,16 @@ This file also contains hidden settings:
 
 AllowAllSettings						-	ensures Presets are disabled and Game Fixes and Speed Hacks are enabled in PCSX2
 
-3. Usage
+Usage
+-------------------------------------------------------------------------------
 The plugin has a minimalistic interface, Simply right click on a PS2 game with PCSX2 as it's default emulator and press configure.
 If the game already has optimized settings then you will be asked if you want to use them, PCSX2 will then open to allow you to make tweaks to your config (for selected game).
 When you are happy with your current config you can close PCSX2, and simply run your game in LaunchBox as normal to play with configured settings.
 All optimized settings are designed for PCSX2 1.5.0-dev and later builds and may not work correctly and require some tweaking for older versions of PCSX2.
 To force a check for optimized settings (after already creating a config) hold left control when pressing configure.
 
-4. Credit and Support
+Credit and Support
+-------------------------------------------------------------------------------
 The Plugin was developed by two members of The LaunchBox community with alec100_94 being responsible for the original idea, and bulk of the plugins development
 And Zombeaver working on the PCSX2 Configuration Project (Optimized Settings) and the artwork used within the plugin, as well as being a tester for the latest version
 
