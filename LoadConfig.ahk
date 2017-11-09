@@ -87,16 +87,17 @@ IniRead, useIndependantMemoryCards, %A_ScriptDir%\Settings.ini, PCSX2_Configurat
 if(useIndependantMemoryCards == "true")
 {
 	MemCardName := StrReplace(gameName, " ", "") . ".ps2"
+	MemCardFile = %emulatorDir%\memcards\%MemCardName%
 	
 	IniWrite, enabled, %configUiFile%, MemoryCards, Slot1_Enable
 	IniWrite, %MemCardName%, %configUiFile%, MemoryCards, Slot1_Filename
 	
 	; If there is No Mem Card for This Game
-	if(!FileExist(%emulatorDir%\memcards\%MemCardName%))
+	if(!FileExist(MemCardFile))
 	{
 		; Create a Fresh One (Formatted)
 		RunWait, %A_ScriptDir%\..\..\7-Zip\7z.exe e "%A_ScriptDir%\Assets\Mcd.7z" -o"%emulatorDir%\memcards", %A_ScriptDir%\..\..\7-Zip, Hide
-		FileMove, %emulatorDir%\memcards\Mcd.ps2, %emulatorDir%\memcards\%MemCardName%
+		FileMove, %emulatorDir%\memcards\Mcd.ps2, %MemCardFile%
 	}
 }
 
