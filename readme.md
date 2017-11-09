@@ -1,6 +1,40 @@
-PCSX2 Configurator v0.9
+PCSX2 Configurator v0.98
 
-This is a configuration plugin for games being run in PCSX2, allowing the user to configure custom per-game configs from right within Launchbox.
-Click this option on a chosen game to create a custom game config (if one doesn't already exist), and configure pcsx2 settings for only that game.
-Each game also creates it's own custom memory card (slot 1), with a shared memory card being in memory card slot 2, all files and settings are stored
-in the PCSX2 emulator path.
+This is a configuration plugin for games being run in PCSX2 through Launchbox. 
+It allows users to configure their games on a per-game basis, and download pre-optimized configurations, form right with LaunchBox.
+
+1. Installation
+Simply Download and extract the zip file, place the "PCSX2 Configurator" folder in your LaunchBox Plugins Directory. Then Start LaunchBox and the plugin will be installed.
+
+2. Settings
+The Plugin Settings Menu is located in LaunchBox's tools Menu. All Current settings are defined how PCSX2 is currently configured.
+Each of the options is explained breifly below:
+
+Use Independant Memory Cards? 			- 	create a new formatted memory card (In Slot 1) for each game that is configured
+Use Current Plugin & Bios Files? 		-	retains current plugin and bios selection when configuring a game (leaving this un-checked will require them to be re-configured)
+Use Current GS Window Settings?			- 	retains current GS Window Settings (Vsync/Aspect Ratio/Custom Window Size)
+Use Current Program Log Settings?   	-   retains current Program Log Settings, The main purpose of this is to show/hide the console window
+Use Current Folder Settings?			-	retains current Folder Settings, This is generally only needed if default folders are not in use
+Use Current VM Settings?				-	retains current VM Settings, This Mostly denotes what custom patches/hacks/cheats are enabled, and will usually be overidden by downloaded configs
+Use Current GSdx Plugin Settings?		-	retains current GSdx (Graphics Plugin) Settings, This will be overidden by downloaded configs
+Use Current SPU2-X Plugin Settings?		-	retains current SPU2-X (Sound Plugin) Settings, Not needed in most cases, May be overidden by downloaded configs
+Use Current LilyPad Plugin Settings?	-	retains current LilyPad (Controller Plugin) Settings, Not needed in most cases
+Configuartions Directory				-	the loaction where per-game configurations are stored, This is in the Emulators ini folder by default though can be changed
+
+Closing the window will automatically apply the settings. Settings can also be changed directly using the Settings.ini file found in the Plugins Directory ("Plugins\PCSX2 Configurator")
+This file also contains hidden settings:
+
+AllowAllSettings						-	ensures Presets are disabled and Game Fixes and Speed Hacks are enabled in PCSX2
+
+3. Usage
+The plugin has a minimalistic interface, Simply right click on a PS2 game with PCSX2 as it's default emulator and press configure.
+If the game already has optimized settings then you will be asked if you want to use them, PCSX2 will then open to allow you to make tweaks to your config (for selected game).
+When you are happy with your current config you can close PCSX2, and simply run your game in LaunchBox as normal to play with configured settings.
+All optimized settings are designed for PCSX2 1.5.0-dev and later builds and may not work correctly and require some tweaking for older versions of PCSX2.
+To force a check for optimized settings (after already creating a config) hold left control when pressing configure.
+
+4. Credit and Support
+The Plugin was developed by two members of The LaunchBox community with alec100_94 being responsible for the original idea, and bulk of the plugins development
+And Zombeaver working on the PCSX2 Configuration Project (Optimized Settings) and the artwork used within the plugin, as well as being a tester for the latest version
+
+For Support or Bug reporting on any part of this plugin please contact alec100_94, by commenting on the file, mentioning him on the forums, or directly through personal message
