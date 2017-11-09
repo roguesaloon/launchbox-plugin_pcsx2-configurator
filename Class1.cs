@@ -19,6 +19,8 @@ namespace PCSX2_Configurator
         private static string configsDir = 
             IniFileHelper.ReadValue("PCSX2_Configurator", "ConfigsDirectoryPath", settingsFile, "default");
 
+        private static Form settingsForm;
+
         public void OnEventRaised(string eventType)
         {
             if (eventType == "LaunchBoxStartupCompleted")
@@ -222,7 +224,9 @@ namespace PCSX2_Configurator
 
         public void OnSelected()
         {
-            var settingsForm = new Form1();
+           if(settingsForm != null) settingsForm.Close();
+           settingsForm  = new Form1();
+
             settingsForm.StartPosition = FormStartPosition.Manual;
             settingsForm.Location = new Point(
                 PluginHelper.LaunchBoxMainForm.Location.X + (int)((PluginHelper.LaunchBoxMainForm.Width - settingsForm.Width) * 0.5f), 

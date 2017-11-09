@@ -24,6 +24,12 @@ namespace PCSX2_Configurator
             e.Graphics.DrawImage(Image.FromFile(Class1.pluginDir + "\\Assets\\background.png"), new Rectangle(0, 0, 400, 400));
         }
 
+        new protected void Close()
+        {
+            (this as Form).Close();
+
+        }
+
         private static Image checkmark = Image.FromFile(Class1.pluginDir + "\\Assets\\checkmark.png");
         private static PrivateFontCollection privateFontCollection;
 

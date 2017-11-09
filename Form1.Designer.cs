@@ -92,6 +92,7 @@ namespace PCSX2_Configurator
             this.useIndependantMemoryCardsLBL.Size = new System.Drawing.Size(210, 15);
             this.useIndependantMemoryCardsLBL.TabIndex = 4;
             this.useIndependantMemoryCardsLBL.Text = "Use Independant Memory Cards?";
+            this.toolTips.SetToolTip(this.useIndependantMemoryCardsLBL, "A Seperate Memory Card for Each Game");
             // 
             // useFileSettingsLBL
             // 
@@ -104,6 +105,7 @@ namespace PCSX2_Configurator
             this.useFileSettingsLBL.Size = new System.Drawing.Size(231, 15);
             this.useFileSettingsLBL.TabIndex = 5;
             this.useFileSettingsLBL.Text = "Use Current Plugin && Bios Files?";
+            this.toolTips.SetToolTip(this.useFileSettingsLBL, "Keep Plugin & Bios Settings");
             // 
             // useWindowSettingsLBL
             // 
@@ -116,6 +118,7 @@ namespace PCSX2_Configurator
             this.useWindowSettingsLBL.Size = new System.Drawing.Size(224, 15);
             this.useWindowSettingsLBL.TabIndex = 6;
             this.useWindowSettingsLBL.Text = "Use Current GS Window Settings?";
+            this.toolTips.SetToolTip(this.useWindowSettingsLBL, "Keep Vsync/Ratio/Size Settings");
             // 
             // useLogSettingsLBL
             // 
@@ -128,6 +131,7 @@ namespace PCSX2_Configurator
             this.useLogSettingsLBL.Size = new System.Drawing.Size(238, 15);
             this.useLogSettingsLBL.TabIndex = 7;
             this.useLogSettingsLBL.Text = "Use Current Program Log Settings?";
+            this.toolTips.SetToolTip(this.useLogSettingsLBL, "Keep Debug/Log Settings (Show/Hide Console)");
             // 
             // useFolderSettingsLBL
             // 
@@ -140,6 +144,7 @@ namespace PCSX2_Configurator
             this.useFolderSettingsLBL.Size = new System.Drawing.Size(203, 15);
             this.useFolderSettingsLBL.TabIndex = 8;
             this.useFolderSettingsLBL.Text = "Use Current Folder Settings?";
+            this.toolTips.SetToolTip(this.useFolderSettingsLBL, "Keep Folder Settings (for Custom Folders)");
             // 
             // useVMSettingsLBL
             // 
@@ -152,6 +157,7 @@ namespace PCSX2_Configurator
             this.useVMSettingsLBL.Size = new System.Drawing.Size(175, 15);
             this.useVMSettingsLBL.TabIndex = 9;
             this.useVMSettingsLBL.Text = "Use Current VM Settings?";
+            this.toolTips.SetToolTip(this.useVMSettingsLBL, "Keep Hack/Cheat/Patch Settings (May be Overidden)");
             // 
             // useGSdxPluginSettingsLBL
             // 
@@ -164,6 +170,7 @@ namespace PCSX2_Configurator
             this.useGSdxPluginSettingsLBL.Size = new System.Drawing.Size(238, 15);
             this.useGSdxPluginSettingsLBL.TabIndex = 10;
             this.useGSdxPluginSettingsLBL.Text = "Use Current GSdx Plugin Settings?";
+            this.toolTips.SetToolTip(this.useGSdxPluginSettingsLBL, "Keep Graphics Settings (May be Overridden)");
             // 
             // useSPU2xPluginSettingsLBL
             // 
@@ -176,6 +183,7 @@ namespace PCSX2_Configurator
             this.useSPU2xPluginSettingsLBL.Size = new System.Drawing.Size(252, 15);
             this.useSPU2xPluginSettingsLBL.TabIndex = 11;
             this.useSPU2xPluginSettingsLBL.Text = "Use Current SPU2-X Plugin Settings?";
+            this.toolTips.SetToolTip(this.useSPU2xPluginSettingsLBL, "Keep Sound Settings (May Be Overridden)");
             // 
             // useLilyPadPluginSettingsLBL
             // 
@@ -188,6 +196,7 @@ namespace PCSX2_Configurator
             this.useLilyPadPluginSettingsLBL.Size = new System.Drawing.Size(259, 15);
             this.useLilyPadPluginSettingsLBL.TabIndex = 12;
             this.useLilyPadPluginSettingsLBL.Text = "Use Current LilyPad Plugin Settings?";
+            this.toolTips.SetToolTip(this.useLilyPadPluginSettingsLBL, "Keep Controller/Input Settings");
             // 
             // configDirBTN
             // 
@@ -321,6 +330,7 @@ namespace PCSX2_Configurator
             this.configDirLBL.TabIndex = 23;
             this.configDirLBL.TabStop = false;
             this.configDirLBL.Text = "Configurations Directory";
+            this.toolTips.SetToolTip(this.configDirLBL, "Store per-game Configs in Custom Directory");
             // 
             // configDirTXT
             // 
