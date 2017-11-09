@@ -26,7 +26,7 @@ Each of the options is explained breifly below:
 
 **Use Current GSdx Plugin Settings?**	- retains current GSdx (Graphics Plugin) Settings, This will be overidden by downloaded configs
 
-**Use Current SPU2-X Plugin Settings** -	retains current SPU2-X (Sound Plugin) Settings, Not needed in most cases, May be overidden by downloaded configs
+**Use Current SPU2-X Plugin Settings?** -	retains current SPU2-X (Sound Plugin) Settings, Not needed in most cases, May be overidden by downloaded configs
 
 **Use Current LilyPad Plugin Settings?** - retains current LilyPad (Controller Plugin) Settings, Not needed in most cases
 Configuartions Directory - the loaction where per-game configurations are stored, This is in the Emulators ini folder by default though can be changed
