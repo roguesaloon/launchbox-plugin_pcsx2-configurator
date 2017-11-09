@@ -86,8 +86,18 @@ IniRead, useIndependantMemoryCards, %A_ScriptDir%\Settings.ini, PCSX2_Configurat
 ; If yes add a new memory card to the config file (named after game)
 if(useIndependantMemoryCards == "true")
 {
+	MemCardName := StrReplace(gameName, " ", "") . ".ps2"
+	
 	IniWrite, enabled, %configUiFile%, MemoryCards, Slot1_Enable
-	IniWrite,% StrReplace(gameName, " ", "") . ".ps2", %configUiFile%, MemoryCards, Slot1_Filename
+	IniWrite, %MemCardName%, %configUiFile%, MemoryCards, Slot1_Filename
+	
+	; If there is No Mem Card for This Game
+	if(!FileExist(%emulatorDir%\memcards\%MemCardName%))
+	{
+		; Create a Fresh One (Formatted)
+		RunWait, %A_ScriptDir%\..\..\7-Zip\7z.exe e "%A_ScriptDir%\Assets\Mcd.7z" -o"%emulatorDir%\memcards", %A_ScriptDir%\..\..\7-Zip, Hide
+		FileMove, %emulatorDir%\memcards\Mcd.ps2, %emulatorDir%\memcards\%MemCardName%
+	}
 }
 
 ; Ask settings File, If All Settings Should Be Enabled
@@ -215,7 +225,7 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 if(useRemoteSettings)
 {
 	remoteSettingsUrl := StrReplace(remoteSettingsUrl, "/tree/master/", "/trunk/")
-	RunWait, %A_ScriptDir%\..\..\SVN\bin\svn.exe export %remoteSettingsUrl% --force, %configDir%\.., HIDE
+	RunWait, %A_ScriptDir%\..\..\SVN\bin\svn.exe export %remoteSettingsUrl% --force, %configDir%\.., Hide
 	
 	; Always allow All Settings For Remote Configs
 	IniWrite, disabled, %configUiFile%, GeneralSettings, EnablePresets
