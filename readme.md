@@ -1,5 +1,5 @@
 PCSX2 Configurator v0.98
-
+-------------------------------------------------------------------------------
 This is a configuration plugin for games being run in PCSX2 through Launchbox. 
 It allows users to configure their games on a per-game basis, and download pre-optimized configurations, form right with LaunchBox.
 
