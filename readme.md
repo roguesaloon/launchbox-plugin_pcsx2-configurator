@@ -46,7 +46,6 @@ To force a check for optimized settings (after already creating a config) hold l
 
 Credit & Support
 -------------------------------------------------------------------------------
-The Plugin was developed by two members of The LaunchBox community with alec100_94 being responsible for the original idea, and bulk of the plugins development
-And Zombeaver working on the PCSX2 Configuration Project (Optimized Settings) and the artwork used within the plugin, as well as being a tester for the latest version
+The Plugin was developed by two members of The LaunchBox community with alec100_94 being responsible for the original idea, and bulk of the plugins development and Zombeaver, working on the PCSX2 Configuration Project (Optimized Settings) and the artwork used within the plugin, as well as being a tester for the latest version.
 
-For Support or Bug reporting on any part of this plugin please contact alec100_94, by commenting on the file, mentioning him on the forums, or directly through personal message
+For Support or Bug reporting on any part of this plugin please contact alec100_94, by commenting on the file, mentioning him on the forums, or directly through personal message.
