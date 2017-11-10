@@ -13,12 +13,9 @@ namespace PCSX2_Configurator
 
     public class Class1 : IGameMenuItemPlugin, ISystemMenuItemPlugin, ISystemEventsPlugin
     {
-        public static string pluginDir =
-            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public static string pluginDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static string settingsFile = pluginDir + "\\Settings.ini";
-        private static string configsDir = 
-            IniFileHelper.ReadValue("PCSX2_Configurator", "ConfigsDirectoryPath", settingsFile, "default");
-
+        private static string configsDir = IniFileHelper.ReadValue("PCSX2_Configurator", "ConfigsDirectoryPath", settingsFile, "default");
         private static Form settingsForm;
 
         public void OnEventRaised(string eventType)
@@ -26,10 +23,7 @@ namespace PCSX2_Configurator
             if (eventType == "LaunchBoxStartupCompleted")
             {
                 HideContextMenuItem(true);
-            }
 
-            if(eventType == "PluginInitialized")
-            {
                 if (!File.Exists(settingsFile))
                 {
                     WriteDefaultIniFile();
@@ -42,6 +36,24 @@ namespace PCSX2_Configurator
                     File.Delete(Directory.GetCurrentDirectory() + "//SVN.zip");
                 }
             }
+        }
+
+        private static string GetFullEmulatorPath()
+        {
+            foreach (var emulator in PluginHelper.DataManager.GetAllEmulators())
+            {
+                if (emulator.Title.Contains("PCSX2"))
+                {
+                    var appPath = emulator.ApplicationPath;
+                    appPath = (!Path.IsPathRooted(appPath)) ? Directory.GetCurrentDirectory() + "\\" + appPath : appPath;
+
+                    return appPath;
+                }
+            }
+
+            MessageBox.Show("It appears you do not have PCSX2 added to LaunchBox\nWhich this plugin needs to function correctly");
+
+            return null;
         }
 
         private void WriteDefaultIniFile()
@@ -115,18 +127,7 @@ namespace PCSX2_Configurator
 
         public static System.Drawing.Icon EmulatorIcon()
         {
-            foreach (var emulator in PluginHelper.DataManager.GetAllEmulators())
-            {
-                if (emulator.Title.Contains("PCSX2"))
-                {
-                    var appPath = emulator.ApplicationPath;
-                    appPath = (!Path.IsPathRooted(appPath)) ? Directory.GetCurrentDirectory() + "\\" + appPath : appPath;
-
-                    return Icon.ExtractAssociatedIcon(appPath);
-                }
-            }
-
-            return null;
+            return Icon.ExtractAssociatedIcon(GetFullEmulatorPath());
         }
 
         public bool ShowInBigBox
@@ -203,21 +204,17 @@ namespace PCSX2_Configurator
             foreach (char c in Path.GetInvalidFileNameChars())
                 safeTitle = safeTitle.Replace(c.ToString(), "");
 
-            // Gets the given and absolute path of the PCSX2 emulator
-            var appPath = pcsx2.ApplicationPath;
-            var appPathAbs = (!Path.IsPathRooted(appPath)) ? Directory.GetCurrentDirectory() + "\\" + appPath : appPath;
-
             // Sets the config path from user settings
             var configPath = (configsDir == "default") ? "inis" : configsDir;
             configPath += "\\" + safeTitle;
 
             // Gets the absolute path of the Game Config Directory
-            var configPathAbs = (!Path.IsPathRooted(configPath)) ? Path.GetDirectoryName(appPathAbs) + "\\" + configPath : configPath;
+            var configPathAbs = (!Path.IsPathRooted(configPath)) ? Path.GetDirectoryName(GetFullEmulatorPath()) + "\\" + configPath : configPath;
 
             return new string[3]
             {
                 Directory.GetCurrentDirectory() + "\\AutoHotkey\\AutoHotkey.exe",
-                "\"" + pluginDir + "\\LoadConfig.ahk\" \"" + configPathAbs + "\"  \"" + appPathAbs + "\"",
+                "\"" + pluginDir + "\\LoadConfig.ahk\" \"" + configPathAbs + "\"  \"" + GetFullEmulatorPath() + "\"",
                 "--cfgpath \"" + configPath + "\""
             };
         }
