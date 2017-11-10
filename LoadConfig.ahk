@@ -39,7 +39,6 @@ if(romName != "")
 	romConfigUiFile = %romConfigDir%\PCSX2_ui.ini
 }
 
-MsgBox, %romConfigUiFile%
 ; If Config Has Already Been Created And Left Control Not Pressed
 if((FileExist(configUiFile) || FileExist(romConfigUiFile)) && !GetKeyState("LControl"))
 {
