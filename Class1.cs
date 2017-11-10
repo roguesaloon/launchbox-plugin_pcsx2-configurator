@@ -166,13 +166,28 @@ namespace PCSX2_Configurator
         {
             var emulator = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId);
 
-            if (emulator != null && emulator.Title.Contains("PCSX2"))
+            if (emulator != null && (emulator.Title.Contains("PCSX2") || ((emulator.Title.Contains("Rocket Launcher") || emulator.Title.Contains("RocketLauncher")) && selectedGame.Platform == "Sony Playstation 2")))
             {
-                var configParams = GetConfigParams(selectedGame);
+                var configParams = GetConfigParams(selectedGame, emulator);
                 selectedGame.ConfigurationPath = configParams[0];
                 selectedGame.ConfigurationCommandLine = configParams[1];
 
-                selectedGame.CommandLine = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId).CommandLine + " " + configParams[2];
+                if (emulator.Title.Contains("PCSX2"))
+                {
+                    selectedGame.CommandLine = emulator.CommandLine + " " + configParams[2];
+                }
+                else  // Using RocketLauncher
+                {
+                    var filePath = emulator.ApplicationPath;
+                    filePath = (!Path.IsPathRooted(filePath)) ? Directory.GetCurrentDirectory() + "\\" + filePath : filePath;
+                    filePath = Path.GetDirectoryName(filePath) + "\\Modules\\PCSX2\\PCSX2.ini";
+
+                    var fullConfigsDir = (configsDir == "default") ? Path.GetDirectoryName(GetFullEmulatorPath()) + "\\inis" : configsDir;
+
+                    if (IniFileHelper.ReadValue("Settings", "cfgpath", filePath) != fullConfigsDir)
+                        IniFileHelper.WriteValue("Settings", "cfgpath", fullConfigsDir, filePath);
+                }
+
                 return true;
             }
 
@@ -194,10 +209,10 @@ namespace PCSX2_Configurator
             return;
         }
 
-        private string[] GetConfigParams(IGame selectedGame)
+        private string[] GetConfigParams(IGame selectedGame, IEmulator emulator)
         {
             // Gets the emulator associated with this game (should be PCSX2)
-            var pcsx2 = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId);
+            //var pcsx2 = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId);
 
             // Gets the safe title of the game (with no illegal characters)
             var safeTitle = selectedGame.Title;
@@ -211,12 +226,28 @@ namespace PCSX2_Configurator
             // Gets the absolute path of the Game Config Directory
             var configPathAbs = (!Path.IsPathRooted(configPath)) ? Path.GetDirectoryName(GetFullEmulatorPath()) + "\\" + configPath : configPath;
 
-            return new string[3]
+            var parameters = new string[3]
             {
                 Directory.GetCurrentDirectory() + "\\AutoHotkey\\AutoHotkey.exe",
                 "\"" + pluginDir + "\\LoadConfig.ahk\" \"" + configPathAbs + "\"  \"" + GetFullEmulatorPath() + "\"",
                 "--cfgpath \"" + configPath + "\""
             };
+
+            if (emulator.Title.Contains("Rocket Launcher") || emulator.Title.Contains("RocketLauncher"))
+            {
+                var appPath = emulator.ApplicationPath;
+                appPath = (!Path.IsPathRooted(appPath)) ? Directory.GetCurrentDirectory() + "\\" + appPath : appPath;
+
+                var gamePath = selectedGame.ApplicationPath;
+                gamePath = (!Path.IsPathRooted(gamePath)) ? Directory.GetCurrentDirectory() + "\\" + gamePath : gamePath;
+
+                var appDir = Path.GetDirectoryName(appPath);
+                var romName = Path.GetFileNameWithoutExtension(gamePath);
+
+                parameters[1] += " \"" + romName + "\"";
+            }
+
+            return parameters;
         }
 
         public void OnSelected()

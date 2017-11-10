@@ -4,6 +4,8 @@
 configDir = %1%
 emulatorPath = %2%
 
+romName = %3%
+
 ; Sets the Emulator Directory, and Initialises Default (Base) Config Directory
 emulatorDir:= SubStr(emulatorPath, 1, InStr(emulatorPath, "\", false, 0)-1)
 defaultDir:= "none"
@@ -28,8 +30,18 @@ if(defaultDir == "none")
 configUiFile = %configDir%\PCSX2_ui.ini
 defaultUiFile = %defaultDir%\PCSX2_ui.ini
 
+; Config Files/Dirs for Rocket Launcher (Matching Rom Name)
+romConfigUiFile = null
+if(romName != "")
+{
+	romConfigDir := SubStr(configDir, 1, InStr(configDir, "\", false, 0))
+	romConfigDir = %romConfigDir%%romName%
+	romConfigUiFile = %romConfigDir%\PCSX2_ui.ini
+}
+
+MsgBox, %romConfigUiFile%
 ; If Config Has Already Been Created And Left Control Not Pressed
-if(FileExist(configUiFile) && !GetKeyState("LControl"))
+if((FileExist(configUiFile) || FileExist(romConfigUiFile)) && !GetKeyState("LControl"))
 {
 	; Start The Emulator For Configuration
 	GoSub, StartEmulator
@@ -269,6 +281,14 @@ FileDelete, %configUiFile%
 FileAppend, %configUiFileText%, %configUiFile%
 
 StartEmulator:
-	; After setting everything up, run the emulator with config directory for initial configuration
+
+	; If Using Rocket Launcher
+	if(romName != "")
+	{
+		FileMoveDir, %configDir%, %romConfigDir%
+		configDir = %romConfigDir%
+	}
+	
+	; After setting everything up, run the emulator with config directory configuration
 	Run, %emulatorPath% --cfgpath "%configDir%"
 	ExitApp
