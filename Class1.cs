@@ -195,7 +195,8 @@ namespace PCSX2_Configurator
                         // Set Game to use Custom Config (On Command-Line in LaunchBox)
                         selectedGame.CommandLine = emulator.CommandLine + " " + configParams[2];
                     }
-                    else  // Using RocketLauncher
+                    
+                    if((emulator.Title.Contains("Rocket Launcher") || emulator.Title.Contains("RocketLauncher")) && selectedGame.Platform == "Sony Playstation 2")
                     {
                         var filePath = emulator.ApplicationPath;
                         filePath = (!Path.IsPathRooted(filePath)) ? Directory.GetCurrentDirectory() + "\\" + filePath : filePath;
@@ -280,11 +281,12 @@ namespace PCSX2_Configurator
 
             var hiddenItems = new bool[contextMenuStrip.Items.Count];
 
-            // Adds an On Click Listener to The Configure Event
+            // Adds an On Click Listener to The Configure Button
             for (int i = 0; i < contextMenuStrip.Items.Count; ++i)
             {
                 if (contextMenuStrip.Items[i].Text == "&Configure...")
                 {
+                    // Setting Event to Subscribe to on Configure Click, This May be null for No Event
                     contextMenuStrip.Items[i].Click += onConfigureClick;
                     break;
                 }
