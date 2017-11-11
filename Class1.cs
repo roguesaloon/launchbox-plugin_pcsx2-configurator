@@ -45,10 +45,7 @@ namespace PCSX2_Configurator
                 {
                     ZipFile.ExtractToDirectory(Path.GetDirectoryName(GetFullEmulatorPath()) + "//cheats_ws.zip", Path.GetDirectoryName(GetFullEmulatorPath()) + "//cheats_ws");
                 }
-                catch (System.Exception e)
-                {
-
-                }
+                catch { }
             }
         }
 
