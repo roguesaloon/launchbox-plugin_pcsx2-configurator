@@ -4,7 +4,6 @@ using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
-using System.Windows.Input;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 
@@ -23,17 +22,32 @@ namespace PCSX2_Configurator
             if (eventType == "LaunchBoxStartupCompleted")
             {
                 HideContextMenuItem(true);
+            }
 
-                if (!File.Exists(settingsFile))
-                {
-                    WriteDefaultIniFile();
-                }
-
+            if(eventType == "PluginInitialized")
+            {
+                // Downloads and Extracts SVN
                 if (!Directory.Exists(Directory.GetCurrentDirectory() + "//SVN"))
                 {
                     new WebClient().DownloadFile("https://www.visualsvn.com/files/Apache-Subversion-1.9.7.zip", Directory.GetCurrentDirectory() + "//SVN.zip");
                     ZipFile.ExtractToDirectory(Directory.GetCurrentDirectory() + "//SVN.zip", Directory.GetCurrentDirectory() + "//SVN");
                     File.Delete(Directory.GetCurrentDirectory() + "//SVN.zip");
+                }
+
+                // Create Settings File (If Not There)
+                if (!File.Exists(settingsFile))
+                {
+                    WriteDefaultIniFile();
+                }
+
+                // Extracts Widescreen Patches that are not present
+                try
+                {
+                    ZipFile.ExtractToDirectory(Path.GetDirectoryName(GetFullEmulatorPath()) + "//cheats_ws.zip", Path.GetDirectoryName(GetFullEmulatorPath()) + "//cheats_ws");
+                }
+                catch (System.Exception e)
+                {
+
                 }
             }
         }
