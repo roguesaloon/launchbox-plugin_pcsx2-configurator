@@ -15,6 +15,7 @@ namespace PCSX2_Configurator
         public static string pluginDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static string settingsFile = pluginDir + "\\Settings.ini";
         private static string configsDir = IniFileHelper.ReadValue("PCSX2_Configurator", "ConfigsDirectoryPath", settingsFile, "default");
+
         private static Form settingsForm;
 
         public void OnEventRaised(string eventType)
@@ -175,34 +176,43 @@ namespace PCSX2_Configurator
 
         public bool GetIsValidForGame(IGame selectedGame)
         {
+            System.EventHandler onConfigureClick = null;
+
             var emulator = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId);
 
             if (emulator != null && (emulator.Title.Contains("PCSX2") || ((emulator.Title.Contains("Rocket Launcher") || emulator.Title.Contains("RocketLauncher")) && selectedGame.Platform == "Sony Playstation 2")))
             {
+                // Set The Configuration Parameters For Selected Game
                 var configParams = GetConfigParams(selectedGame, emulator);
                 selectedGame.ConfigurationPath = configParams[0];
                 selectedGame.ConfigurationCommandLine = configParams[1];
 
-                if (emulator.Title.Contains("PCSX2"))
+                // Sets Action To Complete When Configure is Pressed On Selected Game
+                onConfigureClick = (sender, e) =>
                 {
-                    selectedGame.CommandLine = emulator.CommandLine + " " + configParams[2];
-                }
-                else  // Using RocketLauncher
-                {
-                    var filePath = emulator.ApplicationPath;
-                    filePath = (!Path.IsPathRooted(filePath)) ? Directory.GetCurrentDirectory() + "\\" + filePath : filePath;
-                    filePath = Path.GetDirectoryName(filePath) + "\\Modules\\PCSX2\\PCSX2.ini";
+                    if (emulator.Title.Contains("PCSX2"))
+                    {
+                        // Set Game to use Custom Config (On Command-Line in LaunchBox)
+                        selectedGame.CommandLine = emulator.CommandLine + " " + configParams[2];
+                    }
+                    else  // Using RocketLauncher
+                    {
+                        var filePath = emulator.ApplicationPath;
+                        filePath = (!Path.IsPathRooted(filePath)) ? Directory.GetCurrentDirectory() + "\\" + filePath : filePath;
+                        filePath = Path.GetDirectoryName(filePath) + "\\Modules\\PCSX2\\PCSX2.ini";
 
-                    var fullConfigsDir = (configsDir == "default") ? Path.GetDirectoryName(GetFullEmulatorPath()) + "\\inis" : configsDir;
+                        var fullConfigsDir = (configsDir == "default") ? Path.GetDirectoryName(GetFullEmulatorPath()) + "\\inis" : configsDir;
 
-                    if (IniFileHelper.ReadValue("Settings", "cfgpath", filePath) != fullConfigsDir)
-                        IniFileHelper.WriteValue("Settings", "cfgpath", fullConfigsDir, filePath);
-                }
-
-                return true;
+                        // Tells RocketLauncher Where to Find Custom Configs, If not already known
+                        if (IniFileHelper.ReadValue("Settings", "cfgpath", filePath) != fullConfigsDir)
+                            IniFileHelper.WriteValue("Settings", "cfgpath", fullConfigsDir, filePath);
+                    }
+                };
             }
 
-            return false;
+            SetCommandLineParams(onConfigureClick);
+
+            return onConfigureClick != null;
         }
 
         public bool GetIsValidForGames(IGame[] selectedGames)
@@ -244,6 +254,7 @@ namespace PCSX2_Configurator
                 "--cfgpath \"" + configPath + "\""
             };
 
+            // Add Another Param (Rom Name) for RocketLauncher
             if (emulator.Title.Contains("Rocket Launcher") || emulator.Title.Contains("RocketLauncher"))
             {
                 var appPath = emulator.ApplicationPath;
@@ -259,6 +270,25 @@ namespace PCSX2_Configurator
             }
 
             return parameters;
+        }
+
+        private void SetCommandLineParams(System.EventHandler onConfigureClick)
+        {
+            // Gets the context menu from Launchbox Main Form
+            var contextMenuStripField = PluginHelper.LaunchBoxMainForm.GetType().GetField("contextMenuStrip", BindingFlags.NonPublic | BindingFlags.Instance);
+            var contextMenuStrip = (ContextMenuStrip)contextMenuStripField.GetValue(PluginHelper.LaunchBoxMainForm);
+
+            var hiddenItems = new bool[contextMenuStrip.Items.Count];
+
+            // Adds an On Click Listener to The Configure Event
+            for (int i = 0; i < contextMenuStrip.Items.Count; ++i)
+            {
+                if (contextMenuStrip.Items[i].Text == "&Configure...")
+                {
+                    contextMenuStrip.Items[i].Click += onConfigureClick;
+                    break;
+                }
+            }
         }
 
         public void OnSelected()
