@@ -295,7 +295,7 @@ namespace PCSX2_Configurator
         public void OnSelected()
         {
            if(settingsForm != null) settingsForm.Close();
-           settingsForm  = new Form1();
+           settingsForm  = new SettingsForm();
 
             settingsForm.StartPosition = FormStartPosition.Manual;
             settingsForm.Location = new Point(

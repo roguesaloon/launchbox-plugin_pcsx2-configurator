@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace PCSX2_Configurator
 {
-    public partial class Form1 : Form
+    public partial class SettingsForm : Form
     {
         protected override void OnMouseDown(MouseEventArgs e)
         {
@@ -33,7 +33,7 @@ namespace PCSX2_Configurator
         private static Image checkmark = Image.FromFile(LaunchBoxPlugin.pluginDir + "\\Assets\\checkmark.png");
         private static PrivateFontCollection privateFontCollection;
 
-        public Form1()
+        public SettingsForm()
         {
             
             InitializeComponent();

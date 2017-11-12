@@ -2,7 +2,7 @@
 
 namespace PCSX2_Configurator
 {
-    partial class Form1
+    partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.
