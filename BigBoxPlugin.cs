@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using System.Windows.Input;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 
@@ -7,6 +10,10 @@ namespace PCSX2_Configurator
 {
     public class BigBoxPlugin : IGameMenuItemPlugin, ISystemEventsPlugin
     {
+
+        [DllImport("User32.Dll")]
+        public static extern int PostMessage(int hWnd, int msg, int wParam, int lParam);
+
         public void OnEventRaised(string eventType)
         {
             if (eventType == "BigBoxStartupCompleted")

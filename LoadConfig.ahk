@@ -193,9 +193,11 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 	;MsgBox, 4, PCSX2 Configurator, You are creating a config for a known game`nWould you like to import optimized settings for this game?`nSettings can still be altered later
 	;IfMsgBox, Yes
 		;useRemoteSettings := true
-		
+	
 	UseRemoteSettingsPopup()
 	{
+	global
+		
 		Gui, New, , PCSX2 Configurator
 		Gui, Add, Picture, , %A_ScriptDir%\Assets\knowngame.png
 		Gui -caption +lastfound +alwaysontop
@@ -204,25 +206,41 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 		Gui, Add, Text, BackgroundTrans x218 y154 w60 h30 gYes
 		Gui, Add, Text, BackgroundTrans x304 y154 w60 h30 gNo
 		Gui, Add, Text, BackgroundTrans x374 y16 w16 h16 gGuiClose
-		Gui, Show, , Pause Script?
+		Gui, Add, Hotkey, Hide vHotKey gHotkeys
+		Gui, Show, , Download Config?
 		OnMessage(0x201, "WM_LBUTTONDOWN")
-
-		WinWaitClose, Pause Script?
+		
+		WinWaitClose, Download Config?
 		Return %flag%
 		
-		Yes:
-			flag := true
-			Gui, Submit
+		Hotkeys:
+			if(HotKey = "y") 
+				Yes()
+			
+			if(HotKey = "n") 
+				No()
+				
 			return
+	}
+	
+	GuiClose()
+	{
+		Gui, Cancel
+		ExitApp
+	}
+	
+	Yes()
+	{
+		flag := true
+		Gui, Submit
+		return
+	}
 
-		No:
-			flag := false
-			Gui, Submit
-			return
-		
-		GuiClose:
-			Gui, Cancel
-			ExitApp
+	No()
+	{
+		flag := false
+		Gui, Submit
+		return
 	}
 
 	WM_LBUTTONDOWN()
@@ -230,14 +248,17 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 		PostMessage, 0xA1, 2
 	}
 	
+
+	Run, %A_ScriptDir%\..\..\AutoHotkey\AutoHotkey.exe "%A_ScriptDir%\Assets\ControllerMapper.ahk",,, controllerMapperProcess
 	useRemoteSettings := UseRemoteSettingsPopup()
+	Process, Close, %controllerMapperProcess%
 }
 
 ; Then download them (Using SVN), overwriting what is there
 if(useRemoteSettings)
 {
 	remoteSettingsUrl := StrReplace(remoteSettingsUrl, "/tree/master/", "/trunk/")
-	RunWait, %A_ScriptDir%\..\..\SVN\bin\svn.exe export %remoteSettingsUrl% --force, %configDir%\.., Hide
+	RunWait, %A_ScriptDir%\..\..\SVN\bin\svn.exe export %remoteSettingsUrl% --force, "%configDir%\..", Hide
 	
 	; Always allow All Settings For Remote Configs
 	IniWrite, disabled, %configUiFile%, GeneralSettings, EnablePresets
@@ -289,5 +310,6 @@ StartEmulator:
 	}
 	
 	; After setting everything up, run the emulator with config directory configuration
-	Run, %emulatorPath% --cfgpath "%configDir%"
+	RunWait, %emulatorPath% --cfgpath "%configDir%",,, emulatorProcess
 	ExitApp
+	$Esc:: Process, Close, %emulatorProcess%
