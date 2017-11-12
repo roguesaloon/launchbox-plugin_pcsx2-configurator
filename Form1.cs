@@ -21,7 +21,7 @@ namespace PCSX2_Configurator
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             e.Graphics.FillRectangle(new SolidBrush(this.BackColor), e.ClipRectangle);
-            e.Graphics.DrawImage(Image.FromFile(Class1.pluginDir + "\\Assets\\background.png"), new Rectangle(0, 0, 400, 400));
+            e.Graphics.DrawImage(Image.FromFile(LaunchBoxPlugin.pluginDir + "\\Assets\\background.png"), new Rectangle(0, 0, 400, 400));
         }
 
         new protected void Close()
@@ -30,7 +30,7 @@ namespace PCSX2_Configurator
 
         }
 
-        private static Image checkmark = Image.FromFile(Class1.pluginDir + "\\Assets\\checkmark.png");
+        private static Image checkmark = Image.FromFile(LaunchBoxPlugin.pluginDir + "\\Assets\\checkmark.png");
         private static PrivateFontCollection privateFontCollection;
 
         public Form1()
@@ -39,13 +39,13 @@ namespace PCSX2_Configurator
             InitializeComponent();
             LoadFont();
             LoadFromIniFile();
-            this.Icon = Class1.EmulatorIcon();
+            this.Icon = LaunchBoxPlugin.EmulatorIcon();
          }
 
         private void LoadFont()
         {
             privateFontCollection = new PrivateFontCollection();
-            privateFontCollection.AddFontFile(Class1.pluginDir + "\\Assets\\FixedsysExcelsiorAscii.ttf");
+            privateFontCollection.AddFontFile(LaunchBoxPlugin.pluginDir + "\\Assets\\FixedsysExcelsiorAscii.ttf");
 
             var Fixedsys9 = new Font(privateFontCollection.Families[0], 9, FontStyle.Regular);
             var Fixedsys10 = new Font(privateFontCollection.Families[0], 10, FontStyle.Regular);
@@ -65,68 +65,68 @@ namespace PCSX2_Configurator
 
         private void LoadFromIniFile()
         {
-           if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseIndependantMemoryCards", Class1.settingsFile) == "true")
+           if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseIndependantMemoryCards", LaunchBoxPlugin.settingsFile) == "true")
                 useIndependantMemoryCardsCHK.Image = checkmark;
 
-            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentFileSettings", Class1.settingsFile) == "true")
+            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentFileSettings", LaunchBoxPlugin.settingsFile) == "true")
                 useCurrentFileSettingsCHK.Image = checkmark;
 
-            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentWindowSettings", Class1.settingsFile) == "true")
+            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentWindowSettings", LaunchBoxPlugin.settingsFile) == "true")
                 useCurrentWindowSettingsCHK.Image = checkmark;
 
-            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentLogSettings", Class1.settingsFile) == "true")
+            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentLogSettings", LaunchBoxPlugin.settingsFile) == "true")
                 useCurrentLogSettingsCHK.Image = checkmark;
 
-            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentFolderSettings", Class1.settingsFile) == "true")
+            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentFolderSettings", LaunchBoxPlugin.settingsFile) == "true")
                 useCurrentFolderSettingsCHK.Image = checkmark;
 
-            if(IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentVMSettings", Class1.settingsFile) == "true")
+            if(IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentVMSettings", LaunchBoxPlugin.settingsFile) == "true")
                 useCurrentVMSettingsCHK.Image = checkmark;
 
-            if(IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentGSdxPluginSettings", Class1.settingsFile) == "true")
+            if(IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentGSdxPluginSettings", LaunchBoxPlugin.settingsFile) == "true")
                 useCurrentGSdxPluginSettingsCHK.Image = checkmark;
 
-            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentSPU2xPluginSettings", Class1.settingsFile) == "true")
+            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentSPU2xPluginSettings", LaunchBoxPlugin.settingsFile) == "true")
                 useCurrentSPU2xPluginSettingsCHK.Image = checkmark;
 
-            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentLilyPadPluginSettings", Class1.settingsFile) == "true")
+            if (IniFileHelper.ReadValue("PCSX2_Configurator", "UseCurrentLilyPadPluginSettings", LaunchBoxPlugin.settingsFile) == "true")
                 useCurrentLilyPadPluginSettingsCHK.Image = checkmark;
 
             configDirTXT.Text =
-                IniFileHelper.ReadValue("PCSX2_Configurator", "ConfigsDirectoryPath", Class1.settingsFile);
+                IniFileHelper.ReadValue("PCSX2_Configurator", "ConfigsDirectoryPath", LaunchBoxPlugin.settingsFile);
         }
 
         private void WriteToIniFile()
         {
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseIndependantMemoryCards", 
-                useIndependantMemoryCardsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
+                useIndependantMemoryCardsCHK.Image == checkmark ? "true" : "false", LaunchBoxPlugin.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFileSettings",
-                useCurrentFileSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
+                useCurrentFileSettingsCHK.Image == checkmark ? "true" : "false", LaunchBoxPlugin.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentWindowSettings",
-                useCurrentWindowSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
+                useCurrentWindowSettingsCHK.Image == checkmark ? "true" : "false", LaunchBoxPlugin.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLogSettings",
-                useCurrentLogSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
+                useCurrentLogSettingsCHK.Image == checkmark ? "true" : "false", LaunchBoxPlugin.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentFolderSettings",
-                useCurrentFolderSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
+                useCurrentFolderSettingsCHK.Image == checkmark ? "true" : "false", LaunchBoxPlugin.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentVMSettings",
-               useCurrentVMSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
+               useCurrentVMSettingsCHK.Image == checkmark ? "true" : "false", LaunchBoxPlugin.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentGSdxPluginSettings",
-                useCurrentGSdxPluginSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
+                useCurrentGSdxPluginSettingsCHK.Image == checkmark ? "true" : "false", LaunchBoxPlugin.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentSPU2xPluginSettings",
-                useCurrentSPU2xPluginSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
+                useCurrentSPU2xPluginSettingsCHK.Image == checkmark ? "true" : "false", LaunchBoxPlugin.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "UseCurrentLilyPadPluginSettings",
-                useCurrentLilyPadPluginSettingsCHK.Image == checkmark ? "true" : "false", Class1.settingsFile);
+                useCurrentLilyPadPluginSettingsCHK.Image == checkmark ? "true" : "false", LaunchBoxPlugin.settingsFile);
 
             IniFileHelper.WriteValue("PCSX2_Configurator", "ConfigsDirectoryPath",
-                configDirTXT.Text, Class1.settingsFile);
+                configDirTXT.Text, LaunchBoxPlugin.settingsFile);
         }
 
         private void configDirBTN_Click(object sender, EventArgs e)

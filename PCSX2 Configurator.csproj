@@ -36,6 +36,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
     <Reference Include="Unbroken.LaunchBox.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=558191e84f56affc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\LaunchBox\Metadata\Unbroken.LaunchBox.Plugins.dll</HintPath>
@@ -43,7 +44,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="LaunchBoxPlugin.cs" />
+    <Compile Include="BigBoxPlugin.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

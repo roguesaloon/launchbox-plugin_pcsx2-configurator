@@ -10,7 +10,7 @@ using Unbroken.LaunchBox.Plugins.Data;
 namespace PCSX2_Configurator
 {
 
-    public class Class1 : IGameMenuItemPlugin, ISystemMenuItemPlugin, ISystemEventsPlugin
+    public class LaunchBoxPlugin : IGameMenuItemPlugin, ISystemMenuItemPlugin, ISystemEventsPlugin
     {
         public static string pluginDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static string settingsFile = pluginDir + "\\Settings.ini";
@@ -28,11 +28,11 @@ namespace PCSX2_Configurator
             if(eventType == "PluginInitialized")
             {
                 // Downloads and Extracts SVN
-                if (!Directory.Exists(Directory.GetCurrentDirectory() + "//SVN"))
+                if (!Directory.Exists(Directory.GetCurrentDirectory() + "\\SVN"))
                 {
-                    new WebClient().DownloadFile("https://www.visualsvn.com/files/Apache-Subversion-1.9.7.zip", Directory.GetCurrentDirectory() + "//SVN.zip");
-                    ZipFile.ExtractToDirectory(Directory.GetCurrentDirectory() + "//SVN.zip", Directory.GetCurrentDirectory() + "//SVN");
-                    File.Delete(Directory.GetCurrentDirectory() + "//SVN.zip");
+                    new WebClient().DownloadFile("https://www.visualsvn.com/files/Apache-Subversion-1.9.7.zip", Directory.GetCurrentDirectory() + "\\SVN.zip");
+                    ZipFile.ExtractToDirectory(Directory.GetCurrentDirectory() + "\\SVN.zip", Directory.GetCurrentDirectory() + "\\SVN");
+                    File.Delete(Directory.GetCurrentDirectory() + "\\SVN.zip");
                 }
 
                 // Create Settings File (If Not There)
@@ -44,7 +44,7 @@ namespace PCSX2_Configurator
                 // Extracts Widescreen Patches that are not present
                 try
                 {
-                    ZipFile.ExtractToDirectory(Path.GetDirectoryName(GetFullEmulatorPath()) + "//cheats_ws.zip", Path.GetDirectoryName(GetFullEmulatorPath()) + "//cheats_ws");
+                    ZipFile.ExtractToDirectory(Path.GetDirectoryName(GetFullEmulatorPath()) + "\\cheats_ws.zip", Path.GetDirectoryName(GetFullEmulatorPath()) + "\\cheats_ws");
                 }
                 catch { }
             }
@@ -188,30 +188,10 @@ namespace PCSX2_Configurator
                 selectedGame.ConfigurationCommandLine = configParams[1];
 
                 // Sets Action To Complete When Configure is Pressed On Selected Game
-                onConfigureClick = (sender, e) =>
-                {
-                    if (emulator.Title.Contains("PCSX2"))
-                    {
-                        // Set Game to use Custom Config (On Command-Line in LaunchBox)
-                        selectedGame.CommandLine = emulator.CommandLine + " " + configParams[2];
-                    }
-                    
-                    if((emulator.Title.Contains("Rocket Launcher") || emulator.Title.Contains("RocketLauncher")) && selectedGame.Platform == "Sony Playstation 2")
-                    {
-                        var filePath = emulator.ApplicationPath;
-                        filePath = (!Path.IsPathRooted(filePath)) ? Directory.GetCurrentDirectory() + "\\" + filePath : filePath;
-                        filePath = Path.GetDirectoryName(filePath) + "\\Modules\\PCSX2\\PCSX2.ini";
-
-                        var fullConfigsDir = (configsDir == "default") ? Path.GetDirectoryName(GetFullEmulatorPath()) + "\\inis" : configsDir;
-
-                        // Tells RocketLauncher Where to Find Custom Configs, If not already known
-                        if (IniFileHelper.ReadValue("Settings", "cfgpath", filePath) != fullConfigsDir)
-                            IniFileHelper.WriteValue("Settings", "cfgpath", fullConfigsDir, filePath);
-                    }
-                };
+                onConfigureClick = (sender, e) => SetConfigDirectories(selectedGame, emulator, configParams[2]);
             }
 
-            SetCommandLineParams(onConfigureClick);
+            SetConfigureOnClick(onConfigureClick);
 
             return onConfigureClick != null;
         }
@@ -231,11 +211,8 @@ namespace PCSX2_Configurator
             return;
         }
 
-        private string[] GetConfigParams(IGame selectedGame, IEmulator emulator)
+        public static string[] GetConfigParams(IGame selectedGame, IEmulator emulator)
         {
-            // Gets the emulator associated with this game (should be PCSX2)
-            //var pcsx2 = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId);
-
             // Gets the safe title of the game (with no illegal characters)
             var safeTitle = selectedGame.Title;
             foreach (char c in Path.GetInvalidFileNameChars())
@@ -273,7 +250,29 @@ namespace PCSX2_Configurator
             return parameters;
         }
 
-        private void SetCommandLineParams(System.EventHandler onConfigureClick)
+        public static void SetConfigDirectories(IGame selectedGame, IEmulator emulator, string configPath)
+        {
+            if (emulator.Title.Contains("PCSX2"))
+            {
+                // Set Game to use Custom Config (On Command-Line in LaunchBox)
+                selectedGame.CommandLine = emulator.CommandLine + " " + configPath;
+            }
+
+            if ((emulator.Title.Contains("Rocket Launcher") || emulator.Title.Contains("RocketLauncher")) && selectedGame.Platform == "Sony Playstation 2")
+            {
+                var filePath = emulator.ApplicationPath;
+                filePath = (!Path.IsPathRooted(filePath)) ? Directory.GetCurrentDirectory() + "\\" + filePath : filePath;
+                filePath = Path.GetDirectoryName(filePath) + "\\Modules\\PCSX2\\PCSX2.ini";
+
+                var fullConfigsDir = (configsDir == "default") ? Path.GetDirectoryName(GetFullEmulatorPath()) + "\\inis" : configsDir;
+
+                // Tells RocketLauncher Where to Find Custom Configs, If not already known
+                if (IniFileHelper.ReadValue("Settings", "cfgpath", filePath) != fullConfigsDir)
+                    IniFileHelper.WriteValue("Settings", "cfgpath", fullConfigsDir, filePath);
+            }
+        }
+
+        private void SetConfigureOnClick(System.EventHandler onConfigureClick)
         {
             // Gets the context menu from Launchbox Main Form
             var contextMenuStripField = PluginHelper.LaunchBoxMainForm.GetType().GetField("contextMenuStrip", BindingFlags.NonPublic | BindingFlags.Instance);
