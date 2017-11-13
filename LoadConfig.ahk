@@ -309,6 +309,7 @@ StartEmulator:
 	; If Using Rocket Launcher
 	if(romName != "")
 	{
+		MsgBox, I Use Rocket Launcher
 		FileMoveDir, %configDir%, %romConfigDir%
 		configDir = %romConfigDir%
 	}
@@ -317,4 +318,4 @@ StartEmulator:
 	RunWait, %emulatorPath% --cfgpath "%configDir%",,, emulatorProcess
 	ExitApp
 	
-	$Esc:: Process, Close, %emulatorProcess%
+	^Esc:: Process, Close, %emulatorProcess%
