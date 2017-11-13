@@ -38,11 +38,7 @@ This file also contains hidden settings:
 
 Usage
 -------------------------------------------------------------------------------
-The plugin has a minimalistic interface, Simply right click on a PS2 game with PCSX2 as it's default emulator and press configure.
-If the game already has optimized settings then you will be asked if you want to use them, PCSX2 will then open to allow you to make tweaks to your config (for selected game).
-When you are happy with your current config you can close PCSX2, and simply run your game in LaunchBox as normal to play with configured settings.
-All optimized settings are designed for PCSX2 1.5.0-dev and later builds and may not work correctly and require some tweaking for older versions of PCSX2.
-To force a check for optimized settings (after already creating a config) hold left control when pressing configure.
+The plugin has a minimalistic interface. To Create a custom configuration for a PS2 game with PCSX2 as it's default emulator, Simply right click on it and press configure. If the game already has optimized settings (and is named in accordance to the LaunchboxDB) then you will be asked if you want to use them, PCSX2 will then open to allow you to make tweaks to your config (for selected game). When you are happy with your current config you can close PCSX2, and simply run your game in LaunchBox as normal to play with configured settings. All optimized settings are designed for PCSX2 1.5.0-dev and later builds and may not work correctly and require some tweaking for older versions of PCSX2. To force a check for optimized settings (after already creating a config) hold left control when pressing configure, You can also quickly close the PCSX2 window with CTRL-ESC.
 
 Credit & Support
 -------------------------------------------------------------------------------
