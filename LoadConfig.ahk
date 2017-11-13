@@ -244,6 +244,7 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 		{
 			Gui, Cancel
 			Process, Close, %controllerMapperProcess%
+			FileDelete, %configUiFile%
 			ExitApp
 			return
 		}
