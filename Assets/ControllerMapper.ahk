@@ -1,4 +1,4 @@
 ﻿#NoTrayIcon
 
-Joy1::Send n
-Joy2::Send y
+Joy1::Send y
+Joy2::Send n

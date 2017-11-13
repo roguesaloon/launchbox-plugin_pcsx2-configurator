@@ -214,11 +214,13 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 			if(Hotkey = "y")
 			{
 				GoSub, Yes
+				return
 			}
 			
 			if(Hotkey = "n")
 			{
 				GoSub, No
+				return
 			}
 			
 			return
@@ -241,7 +243,9 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 		GuiClose:
 		{
 			Gui, Cancel
+			Process, Close, %controllerMapperProcess%
 			ExitApp
+			return
 		}
 	}
 
