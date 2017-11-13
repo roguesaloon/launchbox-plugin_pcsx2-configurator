@@ -220,6 +220,8 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 			{
 				GoSub, No
 			}
+			
+			return
 		}
 		
 		Yes:
