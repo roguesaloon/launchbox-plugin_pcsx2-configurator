@@ -20,12 +20,22 @@ namespace PCSX2_Configurator
 
         public void OnEventRaised(string eventType)
         {
+            // Hides Configure in BigBox
+            if (eventType == "BigBoxStartupCompleted")
+            {
+                foreach (var game in PluginHelper.DataManager.GetAllGames())
+                {
+                    if (LaunchBoxPlugin.IsGameValid(game))
+                        game.ConfigurationPath = "";
+                }
+            }
+
             if (eventType == "LaunchBoxStartupCompleted")
             {
                 HideContextMenuItem(true);
             }
 
-            if(eventType == "PluginInitialized")
+            if (eventType == "PluginInitialized")
             {
                 // Downloads and Extracts SVN
                 if (!Directory.Exists(Directory.GetCurrentDirectory() + "\\SVN"))
@@ -174,7 +184,7 @@ namespace PCSX2_Configurator
             }
         }
 
-        public static bool IsGameValid(IGame game)
+        private static bool IsGameValid(IGame game)
         {
             var emulator = PluginHelper.DataManager.GetEmulatorById(game.EmulatorId);
             return (emulator != null && (emulator.Title.Contains("PCSX2") || ((emulator.Title.Contains("Rocket Launcher") || emulator.Title.Contains("RocketLauncher")) && game.Platform == "Sony Playstation 2")));
