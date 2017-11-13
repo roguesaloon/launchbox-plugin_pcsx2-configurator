@@ -46,8 +46,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LaunchBoxPlugin.cs" />
     <Compile Include="BigBoxPlugin.cs" />
+    <Compile Include="LaunchBoxPlugin.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>

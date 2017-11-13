@@ -174,21 +174,26 @@ namespace PCSX2_Configurator
             }
         }
 
+        public static bool IsGameValid(IGame game)
+        {
+            var emulator = PluginHelper.DataManager.GetEmulatorById(game.EmulatorId);
+            return (emulator != null && (emulator.Title.Contains("PCSX2") || ((emulator.Title.Contains("Rocket Launcher") || emulator.Title.Contains("RocketLauncher")) && game.Platform == "Sony Playstation 2")));
+
+        }
+
         public bool GetIsValidForGame(IGame selectedGame)
         {
             System.EventHandler onConfigureClick = null;
 
-            var emulator = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId);
-
-            if (emulator != null && (emulator.Title.Contains("PCSX2") || ((emulator.Title.Contains("Rocket Launcher") || emulator.Title.Contains("RocketLauncher")) && selectedGame.Platform == "Sony Playstation 2")))
+            if (IsGameValid(selectedGame))
             {
                 // Set The Configuration Parameters For Selected Game
-                var configParams = GetConfigParams(selectedGame, emulator);
+                var configParams = GetConfigParams(selectedGame);
                 selectedGame.ConfigurationPath = configParams[0];
                 selectedGame.ConfigurationCommandLine = configParams[1];
 
                 // Sets Action To Complete When Configure is Pressed On Selected Game
-                onConfigureClick = (sender, e) => SetConfigDirectories(selectedGame, emulator, configParams[2]);
+                onConfigureClick = (sender, e) => SetConfigDirectories(selectedGame, configParams[2]);
             }
 
             SetConfigureOnClick(onConfigureClick);
@@ -211,8 +216,11 @@ namespace PCSX2_Configurator
             return;
         }
 
-        public static string[] GetConfigParams(IGame selectedGame, IEmulator emulator)
+        private static string[] GetConfigParams(IGame selectedGame)
         {
+            // Finds Emulator Associated with Game
+            var emulator = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId);
+
             // Gets the safe title of the game (with no illegal characters)
             var safeTitle = selectedGame.Title;
             foreach (char c in Path.GetInvalidFileNameChars())
@@ -250,8 +258,11 @@ namespace PCSX2_Configurator
             return parameters;
         }
 
-        public static void SetConfigDirectories(IGame selectedGame, IEmulator emulator, string configPath)
+        private static void SetConfigDirectories(IGame selectedGame, string configPath)
         {
+            // Finds Emulator Associated with Game
+            var emulator = PluginHelper.DataManager.GetEmulatorById(selectedGame.EmulatorId);
+
             if (emulator.Title.Contains("PCSX2"))
             {
                 // Set Game to use Custom Config (On Command-Line in LaunchBox)

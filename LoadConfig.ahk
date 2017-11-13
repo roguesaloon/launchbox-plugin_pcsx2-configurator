@@ -255,9 +255,7 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 		PostMessage, 0xA1, 2
 	}
 	
-	Run, %A_ScriptDir%\..\..\AutoHotkey\AutoHotkey.exe "%A_ScriptDir%\Assets\ControllerMapper.ahk",,, controllerMapperProcess
 	useRemoteSettings := UseRemoteSettingsPopup()
-	Process, Close, %controllerMapperProcess%
 }
 
 ; Then download them (Using SVN), overwriting what is there
