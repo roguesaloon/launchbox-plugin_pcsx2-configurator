@@ -309,7 +309,6 @@ StartEmulator:
 	; If Using Rocket Launcher
 	if(romName != "")
 	{
-		MsgBox, I Use Rocket Launcher
 		FileMoveDir, %configDir%, %romConfigDir%
 		configDir = %romConfigDir%
 	}
