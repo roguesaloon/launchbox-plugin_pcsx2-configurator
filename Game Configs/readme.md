@@ -2,6 +2,4 @@ A spreadsheet detailing the contents of each config can be found here: https://d
 
 First and foremost, and I cannot stress this enough, is that these configs are designed specifically for PCSX2 1.5.0. The latest stable version - 1.4.0 - is more than a year old at this point and a ton of improvements have been added in the meantime. Some of these configs likely won’t work at all for 1.4.0 as there are hacks implemented in 1.5.0 that don’t even exist in 1.4.0, and the plugins have changed over time. You need to be using PCSX2 1.5.0 in order to use these configs. You can find the latest development builds (1.5.0) available here: https://pcsx2.net/download/development.html
 
-VERY IMPORTANT: These configs are designed to be used in conjunction with the widescreen patches so that they're in 16:9 without stretching. When you download 1.5.0, there will be a zip named "cheats_ws.zip" which needs to be extracted into PCSX2's "cheats_ws" folder.
-
 Launchbox thread with more info and where I'll be posting about new configs as I add them: https://forums.launchbox-app.com/topic/41653-zombeavers-pcsx2-configs-simple-1-click-installs-with-pcsx2-configurator/

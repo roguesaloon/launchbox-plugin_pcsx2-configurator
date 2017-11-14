@@ -22,8 +22,17 @@ IfExist, %emulatorDir%\inis_1.4.0\PCSX2_ui.ini
 	
 if(defaultDir == "none")
 {
-	MsgBox, 0, PCSX2 Configurator, No Default PCSX2 Configuration was found`nThe Plugin Will now Stop`nPlease contact the developer for support
-	exit
+	RegRead, settingsFolder, HKEY_CURRENT_USER\Software\PCSX2, SettingsFolder
+	
+	if(settingsFolder != "")
+	{
+		defaultDir = settingsFolder
+	}
+	else
+	{
+		MsgBox, 0, PCSX2 Configurator, No Default PCSX2 Configuration was found`nThe Plugin Will now Stop`nPlease contact the developer for support
+		ExitApp
+	}
 }
 
 ; Sets the location of the base and new config files
