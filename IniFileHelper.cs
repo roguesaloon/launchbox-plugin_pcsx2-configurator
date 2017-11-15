@@ -22,7 +22,6 @@ public static class IniFileHelper
 {
 	public static int capacity = 512;
 
-
 	[DllImport("kernel32", CharSet = CharSet.Unicode)]
 	private static extern int GetPrivateProfileString(string section, string key, string defaultValue, StringBuilder value, int size, string filePath);
 

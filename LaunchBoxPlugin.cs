@@ -204,9 +204,10 @@ namespace PCSX2_Configurator
 
                 // Sets Action To Complete When Configure is Pressed On Selected Game
                 onConfigureClick = (sender, e) => SetConfigDirectories(selectedGame, configParams[2]);
+                SetConfigureOnClick(onConfigureClick);
             }
 
-            SetConfigureOnClick(onConfigureClick);
+            
 
             return onConfigureClick != null;
         }
@@ -304,9 +305,9 @@ namespace PCSX2_Configurator
             // Adds an On Click Listener to The Configure Button
             for (int i = 0; i < contextMenuStrip.Items.Count; ++i)
             {
-                if (contextMenuStrip.Items[i].Text == "&Configure...")
+                if (contextMenuStrip.Items[i].Name == "configureContextToolStripMenuItem")
                 {
-                    // Setting Event to Subscribe to on Configure Click, This May be null for No Event
+                    // Setting Event to Subscribe to on Configure Click
                     contextMenuStrip.Items[i].Click += onConfigureClick;
                     break;
                 }
