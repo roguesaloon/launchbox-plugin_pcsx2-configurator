@@ -21,7 +21,7 @@ namespace PCSX2_Configurator
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             e.Graphics.FillRectangle(new SolidBrush(this.BackColor), e.ClipRectangle);
-            e.Graphics.DrawImage(Image.FromFile(LaunchBoxPlugin.pluginDir + "\\Assets\\background.png"), new Rectangle(0, 0, 400, 400));
+            e.Graphics.DrawImage(Image.FromFile(LaunchBoxPlugin.pluginDir + "\\Assets\\background.png"), new Rectangle(0, 0, this.Width, this.Height));
         }
 
         new protected void Close()
