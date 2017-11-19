@@ -179,7 +179,7 @@ if(useCurrentLilyPadPluginSettings == "true")
 isKnownGame(game, ByRef url)
 {
 	game := StrReplace(game, " ", "%20")
-	game := StrReplace(game, "&", "%26")
+	game := StrReplace(game, "&", "and")
 	StringLower, game, game
 	url := "https://github.com/roguesaloon/launchbox-plugin_pcsx2-configurator/tree/master/Game%20Configs/"
 	url = %url%%game%
@@ -215,10 +215,10 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 		Gui -caption +lastfound +alwaysontop
 		Gui, Color, EEAA99
 		WinSet, TransColor, EEAA99
-		Gui, Add, Button, x218 y154 w60 h30 gYes
-		Gui, Add, Button, x304 y154 w60 h30 gNo
+		Gui, Add, Button, BackgroundTrans x218 y154 w60 h30 gYes
+		Gui, Add, Button, BackgroundTrans x304 y154 w60 h30 gNo
 		Gui, Add, Hotkey, Hide vHotKey gHotkeys
-		Gui, Add, Button, x374 y16 w16 h16 gGuiClose
+		Gui, Add, Button, BackgroundTrans x374 y16 w16 h16 gGuiClose
 		Gui, Show, , Pause Script?
 		OnMessage(0x201, "WM_LBUTTONDOWN")
 
