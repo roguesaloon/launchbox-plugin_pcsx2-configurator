@@ -215,10 +215,10 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 		Gui -caption +lastfound +alwaysontop
 		Gui, Color, EEAA99
 		WinSet, TransColor, EEAA99
-		Gui, Add, Button, BackgroundTrans x218 y154 w60 h30 gYes
-		Gui, Add, Button, BackgroundTrans x304 y154 w60 h30 gNo
+		Gui, Add, Text, BackgroundTrans x218 y154 w60 h30 gYes
+		Gui, Add, Text, BackgroundTrans x304 y154 w60 h30 gNo
 		Gui, Add, Hotkey, Hide vHotKey gHotkeys
-		Gui, Add, Button, BackgroundTrans x374 y16 w16 h16 gGuiClose
+		Gui, Add, Text, BackgroundTrans x374 y16 w16 h16 gGuiClose
 		Gui, Show, , Pause Script?
 		OnMessage(0x201, "WM_LBUTTONDOWN")
 
@@ -279,6 +279,10 @@ if(useRemoteSettings)
 {
 	remoteSettingsUrl := StrReplace(remoteSettingsUrl, "/tree/master/", "/trunk/")
 	RunWait, %A_ScriptDir%\..\..\SVN\bin\svn.exe export %remoteSettingsUrl% --force, %configDir%\.., Hide
+	
+	IfInString, gameName, &
+		FileMoveDir, % StrReplace(configDir, "&", "and"), %configDir%, 2
+		
 	
 	; Always allow All Settings For Remote Configs
 	IniWrite, disabled, %configUiFile%, GeneralSettings, EnablePresets
