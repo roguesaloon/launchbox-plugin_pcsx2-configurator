@@ -211,7 +211,7 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 	global
 	
 		Gui, New, , PCSX2 Configurator
-		Gui, Add, Picture, , %A_ScriptDir%\Assets\knowngame.png
+		Gui, Add, Picture, w400 h200, %A_ScriptDir%\Assets\knowngame.png
 		Gui -caption +lastfound +alwaysontop
 		Gui, Color, EEAA99
 		WinSet, TransColor, EEAA99
@@ -219,10 +219,10 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 		Gui, Add, Text, BackgroundTrans x304 y154 w60 h30 gNo
 		Gui, Add, Hotkey, Hide vHotKey gHotkeys
 		Gui, Add, Text, BackgroundTrans x374 y16 w16 h16 gGuiClose
-		Gui, Show, , Pause Script?
+		Gui, Show, , PCSX2 Configurator
 		OnMessage(0x201, "WM_LBUTTONDOWN")
 
-		WinWaitClose, Pause Script?
+		WinWaitClose, PCSX2 Configurator
 		Return %flag%
 		
 		Hotkeys:
@@ -259,7 +259,6 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 		GuiClose:
 		{
 			Gui, Cancel
-			Process, Close, %controllerMapperProcess%
 			FileDelete, %configUiFile%
 			ExitApp
 			return

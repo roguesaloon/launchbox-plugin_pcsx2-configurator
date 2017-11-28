@@ -27,16 +27,16 @@ namespace PCSX2_Configurator
         new protected void Close()
         {
             (this as Form).Close();
-
         }
 
-        private static Image checkmark = Image.FromFile(LaunchBoxPlugin.pluginDir + "\\Assets\\checkmark.png");
+        private static Image checkmark;
         private static PrivateFontCollection privateFontCollection;
 
         public SettingsForm()
         {
-            
             InitializeComponent();
+
+            checkmark = new Bitmap(Image.FromFile(LaunchBoxPlugin.pluginDir + "\\Assets\\checkmark.png"), new Size(16 * this.Width / 400, 16 * this.Height / 400));
             LoadFont();
             LoadFromIniFile();
             this.Icon = LaunchBoxPlugin.EmulatorIcon();
