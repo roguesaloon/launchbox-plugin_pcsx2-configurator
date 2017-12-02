@@ -185,12 +185,13 @@ isKnownGame(game, ByRef url)
 	url = %url%%game%
 	
 	whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
+	ComObjError(false)
 	whr.Open("GET", url, true)
 	whr.Send()
 	whr.WaitForResponse()
 	response := whr.ResponseText
-	
-	if(response == "Not Found")
+
+	if(response == "Not Found" || response == "")
 	{
 		return false
 	}
@@ -210,7 +211,7 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 	{
 	global
 	
-		Gui, New, , PCSX2 Configurator
+		Gui, New, , PCSX2_Configurator
 		Gui, Add, Picture, w400 h200, %A_ScriptDir%\Assets\knowngame.png
 		Gui -caption +lastfound +alwaysontop
 		Gui, Color, EEAA99
@@ -219,11 +220,11 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 		Gui, Add, Text, BackgroundTrans x304 y154 w60 h30 gNo
 		Gui, Add, Hotkey, Hide vHotKey gHotkeys
 		Gui, Add, Text, BackgroundTrans x374 y16 w16 h16 gGuiClose
-		Gui, Show, , PCSX2 Configurator
+		Gui, Show
 		OnMessage(0x201, "WM_LBUTTONDOWN")
 
-		WinWaitClose, PCSX2 Configurator
-		Return %flag%
+		WinWaitClose, PCSX2_Configurator
+		return %flag%
 		
 		Hotkeys:
 		{
@@ -259,6 +260,7 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 		GuiClose:
 		{
 			Gui, Cancel
+			Process, Close, %controllerMapperProcess%
 			FileDelete, %configUiFile%
 			ExitApp
 			return
@@ -277,11 +279,19 @@ if(isKnownGame(gameName, remoteSettingsUrl))
 if(useRemoteSettings)
 {
 	remoteSettingsUrl := StrReplace(remoteSettingsUrl, "/tree/master/", "/trunk/")
-	RunWait, %A_ScriptDir%\..\..\SVN\bin\svn.exe export %remoteSettingsUrl% --force, %configDir%\.., Hide
+	RunWait,%comspec% /c ""%A_ScriptDir%\..\..\SVN\bin\svn.exe" export %remoteSettingsUrl% --force > "%configDir%\SVNout.txt"", %configDir%\.., Hide
 	
 	IfInString, gameName, &
 		FileMoveDir, % StrReplace(configDir, "&", "and"), %configDir%, 2
-		
+	
+	FileRead, SVNout, %configDir%\SVNout.txt
+	FileDelete, %configDir%\SVNout.txt
+	
+	if(!InStr(SVNout, "Exported revision"))
+	{
+		MsgBox, 0, PCSX2 Configurator, There was a Problem Downloading The Config`nNo Config Will Be Downloaded
+		GoSub, StartEmulator
+	}
 	
 	; Always allow All Settings For Remote Configs
 	IniWrite, disabled, %configUiFile%, GeneralSettings, EnablePresets

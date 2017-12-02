@@ -18,6 +18,8 @@ namespace PCSX2_Configurator
 
         private static Form settingsForm;
 
+        private static bool SVNDownloadError = false;
+
         public void OnEventRaised(string eventType)
         {
             // Hides Configure in BigBox
@@ -32,6 +34,9 @@ namespace PCSX2_Configurator
 
             if (eventType == "LaunchBoxStartupCompleted")
             {
+                if(SVNDownloadError)
+                    MessageBox.Show("There Was a Problem Downloading SVN\nPlease Check your Internet Connection", "PCSX2 Configurator");
+
                 HideContextMenuItem(true);
             }
 
@@ -40,9 +45,13 @@ namespace PCSX2_Configurator
                 // Downloads and Extracts SVN
                 if (!Directory.Exists(Directory.GetCurrentDirectory() + "\\SVN"))
                 {
-                    new WebClient().DownloadFile("https://www.visualsvn.com/files/Apache-Subversion-1.9.7.zip", Directory.GetCurrentDirectory() + "\\SVN.zip");
-                    ZipFile.ExtractToDirectory(Directory.GetCurrentDirectory() + "\\SVN.zip", Directory.GetCurrentDirectory() + "\\SVN");
-                    File.Delete(Directory.GetCurrentDirectory() + "\\SVN.zip");
+                    try
+                    {
+                        new WebClient().DownloadFile("https://www.visualsvn.com/files/Apache-Subversion-1.9.7.zip", Directory.GetCurrentDirectory() + "\\SVN.zip");
+                        ZipFile.ExtractToDirectory(Directory.GetCurrentDirectory() + "\\SVN.zip", Directory.GetCurrentDirectory() + "\\SVN");
+                        File.Delete(Directory.GetCurrentDirectory() + "\\SVN.zip");
+                    }
+                    catch { SVNDownloadError = true; }
                 }
 
                 // Create Settings File (If Not There)
