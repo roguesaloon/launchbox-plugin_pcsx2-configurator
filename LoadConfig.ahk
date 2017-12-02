@@ -3,6 +3,7 @@
 ; Takes the Config Directory and Path of the Emulator as Parameters Both are Absolute
 configDir = %1%
 emulatorPath = %2%
+romPath = %3%
 
 if(configDir == "")
 {
@@ -10,7 +11,7 @@ if(configDir == "")
 	ExitApp
 }
 
-romName = %3%
+romName = %4%
 
 ; Sets the Emulator Directory, and Initialises Default (Base) Config Directory
 emulatorDir:= SubStr(emulatorPath, 1, InStr(emulatorPath, "\", false, 0)-1)
@@ -137,6 +138,9 @@ if(allowAllSettings == "true")
 	IniWrite, enabled, %configUiFile%, GeneralSettings, EnableGameFixes
 	IniWrite, enabled, %configUiFile%, GeneralSettings, EnableSpeedHacks
 }
+
+; Sets The Current Iso, To Given One
+IniWrite, %romPath%, %configUiFile%, GeneralSettings, CurrentIso
 
 ; VM Settings
 
@@ -343,7 +347,5 @@ StartEmulator:
 	}
 	
 	; After setting everything up, run the emulator with config directory configuration
-	RunWait, %emulatorPath% --cfgpath "%configDir%",,, emulatorProcess
+	RunWait, %emulatorPath% --cfgpath "%configDir%"
 	ExitApp
-	
-	^Esc:: Process, Close, %emulatorProcess%

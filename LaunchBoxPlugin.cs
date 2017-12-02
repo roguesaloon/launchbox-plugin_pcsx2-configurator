@@ -253,10 +253,13 @@ namespace PCSX2_Configurator
             // Gets the absolute path of the Game Config Directory
             var configPathAbs = (!Path.IsPathRooted(configPath)) ? Path.GetDirectoryName(GetFullEmulatorPath()) + "\\" + configPath : configPath;
 
+            var gamePath = selectedGame.ApplicationPath;
+            gamePath = (!Path.IsPathRooted(gamePath)) ? Directory.GetCurrentDirectory() + "\\" + gamePath : gamePath;
+
             var parameters = new string[3]
             {
                 Directory.GetCurrentDirectory() + "\\AutoHotkey\\AutoHotkey.exe",
-                "\"" + pluginDir + "\\LoadConfig.ahk\" \"" + configPathAbs + "\"  \"" + GetFullEmulatorPath() + "\"",
+                "\"" + pluginDir + "\\LoadConfig.ahk\" \"" + configPathAbs + "\"  \"" + GetFullEmulatorPath() + "\" \"" + gamePath.Replace("\\", "\\\\") + "\"",
                 "--cfgpath \"" + configPath + "\""
             };
 
@@ -265,9 +268,6 @@ namespace PCSX2_Configurator
             {
                 var appPath = emulator.ApplicationPath;
                 appPath = (!Path.IsPathRooted(appPath)) ? Directory.GetCurrentDirectory() + "\\" + appPath : appPath;
-
-                var gamePath = selectedGame.ApplicationPath;
-                gamePath = (!Path.IsPathRooted(gamePath)) ? Directory.GetCurrentDirectory() + "\\" + gamePath : gamePath;
 
                 var appDir = Path.GetDirectoryName(appPath);
                 var romName = Path.GetFileNameWithoutExtension(gamePath);
