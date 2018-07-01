@@ -79,7 +79,7 @@ namespace PCSX2_Configurator
             this.closeBTN.Size = new System.Drawing.Size(34, 35);
             this.closeBTN.TabIndex = 3;
             this.closeBTN.TabStop = false;
-            this.closeBTN.Click += new System.EventHandler(this.closeBTN_Click);
+            this.closeBTN.Click += new System.EventHandler(this.CloseBTN_Click);
             // 
             // useIndependantMemoryCardsLBL
             // 
@@ -208,7 +208,7 @@ namespace PCSX2_Configurator
             this.configDirBTN.Size = new System.Drawing.Size(57, 35);
             this.configDirBTN.TabIndex = 13;
             this.configDirBTN.TabStop = false;
-            this.configDirBTN.Click += new System.EventHandler(this.configDirBTN_Click);
+            this.configDirBTN.Click += new System.EventHandler(this.ConfigDirBTN_Click);
             // 
             // useIndependantMemoryCardsCHK
             // 
@@ -220,7 +220,7 @@ namespace PCSX2_Configurator
             this.useIndependantMemoryCardsCHK.Size = new System.Drawing.Size(16, 16);
             this.useIndependantMemoryCardsCHK.TabIndex = 14;
             this.useIndependantMemoryCardsCHK.TabStop = false;
-            this.useIndependantMemoryCardsCHK.Click += new System.EventHandler(this.useIndependantMemoryCardsCHK_Click);
+            this.useIndependantMemoryCardsCHK.Click += new System.EventHandler(this.UseIndependantMemoryCardsCHK_Click);
             // 
             // useCurrentFileSettingsCHK
             // 
@@ -232,7 +232,7 @@ namespace PCSX2_Configurator
             this.useCurrentFileSettingsCHK.Size = new System.Drawing.Size(16, 16);
             this.useCurrentFileSettingsCHK.TabIndex = 15;
             this.useCurrentFileSettingsCHK.TabStop = false;
-            this.useCurrentFileSettingsCHK.Click += new System.EventHandler(this.useCurrentFileSettingsCHK_Click);
+            this.useCurrentFileSettingsCHK.Click += new System.EventHandler(this.UseCurrentFileSettingsCHK_Click);
             // 
             // useCurrentWindowSettingsCHK
             // 
@@ -244,7 +244,7 @@ namespace PCSX2_Configurator
             this.useCurrentWindowSettingsCHK.Size = new System.Drawing.Size(16, 16);
             this.useCurrentWindowSettingsCHK.TabIndex = 16;
             this.useCurrentWindowSettingsCHK.TabStop = false;
-            this.useCurrentWindowSettingsCHK.Click += new System.EventHandler(this.useCurrentWindowSettingsCHK_Click);
+            this.useCurrentWindowSettingsCHK.Click += new System.EventHandler(this.UseCurrentWindowSettingsCHK_Click);
             // 
             // useCurrentLogSettingsCHK
             // 
@@ -256,7 +256,7 @@ namespace PCSX2_Configurator
             this.useCurrentLogSettingsCHK.Size = new System.Drawing.Size(16, 16);
             this.useCurrentLogSettingsCHK.TabIndex = 17;
             this.useCurrentLogSettingsCHK.TabStop = false;
-            this.useCurrentLogSettingsCHK.Click += new System.EventHandler(this.useCurrentLogSettingsCHK_Click);
+            this.useCurrentLogSettingsCHK.Click += new System.EventHandler(this.UseCurrentLogSettingsCHK_Click);
             // 
             // useCurrentFolderSettingsCHK
             // 
@@ -268,7 +268,7 @@ namespace PCSX2_Configurator
             this.useCurrentFolderSettingsCHK.Size = new System.Drawing.Size(16, 16);
             this.useCurrentFolderSettingsCHK.TabIndex = 18;
             this.useCurrentFolderSettingsCHK.TabStop = false;
-            this.useCurrentFolderSettingsCHK.Click += new System.EventHandler(this.useCurrentFolderSettingsCHK_Click);
+            this.useCurrentFolderSettingsCHK.Click += new System.EventHandler(this.UseCurrentFolderSettingsCHK_Click);
             // 
             // useCurrentVMSettingsCHK
             // 
@@ -280,7 +280,7 @@ namespace PCSX2_Configurator
             this.useCurrentVMSettingsCHK.Size = new System.Drawing.Size(16, 16);
             this.useCurrentVMSettingsCHK.TabIndex = 19;
             this.useCurrentVMSettingsCHK.TabStop = false;
-            this.useCurrentVMSettingsCHK.Click += new System.EventHandler(this.useCurrentVMSettingsCHK_Click);
+            this.useCurrentVMSettingsCHK.Click += new System.EventHandler(this.UseCurrentVMSettingsCHK_Click);
             // 
             // useCurrentGSdxPluginSettingsCHK
             // 
@@ -292,7 +292,7 @@ namespace PCSX2_Configurator
             this.useCurrentGSdxPluginSettingsCHK.Size = new System.Drawing.Size(16, 16);
             this.useCurrentGSdxPluginSettingsCHK.TabIndex = 20;
             this.useCurrentGSdxPluginSettingsCHK.TabStop = false;
-            this.useCurrentGSdxPluginSettingsCHK.Click += new System.EventHandler(this.useCurrentGSdxPluginSettingsCHK_Click);
+            this.useCurrentGSdxPluginSettingsCHK.Click += new System.EventHandler(this.UseCurrentGSdxPluginSettingsCHK_Click);
             // 
             // useCurrentSPU2xPluginSettingsCHK
             // 
@@ -304,7 +304,7 @@ namespace PCSX2_Configurator
             this.useCurrentSPU2xPluginSettingsCHK.Size = new System.Drawing.Size(16, 16);
             this.useCurrentSPU2xPluginSettingsCHK.TabIndex = 21;
             this.useCurrentSPU2xPluginSettingsCHK.TabStop = false;
-            this.useCurrentSPU2xPluginSettingsCHK.Click += new System.EventHandler(this.useCurrentSPU2xPluginSettingsCHK_Click);
+            this.useCurrentSPU2xPluginSettingsCHK.Click += new System.EventHandler(this.UseCurrentSPU2xPluginSettingsCHK_Click);
             // 
             // useCurrentLilyPadPluginSettingsCHK
             // 
@@ -316,7 +316,7 @@ namespace PCSX2_Configurator
             this.useCurrentLilyPadPluginSettingsCHK.Size = new System.Drawing.Size(16, 16);
             this.useCurrentLilyPadPluginSettingsCHK.TabIndex = 22;
             this.useCurrentLilyPadPluginSettingsCHK.TabStop = false;
-            this.useCurrentLilyPadPluginSettingsCHK.Click += new System.EventHandler(this.useCurrentLilyPadPluginSettingsCHK_Click);
+            this.useCurrentLilyPadPluginSettingsCHK.Click += new System.EventHandler(this.UseCurrentLilyPadPluginSettingsCHK_Click);
             // 
             // configDirLBL
             // 
