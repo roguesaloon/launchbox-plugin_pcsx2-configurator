@@ -55,9 +55,14 @@ Credit & History
 This plugin was created by myself (alec100_94), and began life sometime in June 2017, when I was frustrated with not having a sensible solution for using different Settings with PS2 Games that integrated nicely with LaunchBox. Later that year fellow LaunchBox user Zombeaver messaged me, asking if it was possible to use his pre-made PCSX2 configs with my plugin, so I decided to work with him and add full support for them as a part of the plugin. The plugin has since gained popularity through the LaunchBox community and has evolved into something much more than what is was originally envisoned as. 
 
 A lot of time and effort has gone into creating this plugin and I would like to say a massive thank you to everyone that has given it a shot. I would also like to say a special thank you to a few (awesome) members of the LaunchBox community who have been great and helped shape this plugin into what it currently is:
+
 Zombeaver
+
 Spectral
+
 ckp
+
 neil9000
+
 kmoney
 
